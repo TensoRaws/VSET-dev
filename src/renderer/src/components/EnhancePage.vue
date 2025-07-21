@@ -1,12 +1,15 @@
 <template>
+  <n-tabs type="segment" animated>
+    <!-- 分页 1：超分配置 -->
+    <n-tab-pane name="sr" tab="超分">
     <div class="flex-container">
       <div class="top-switch-bar" >
         <div style="border: 1px solid #dcdfe6; padding: 15px; border-radius: 6px;">
       <el-switch
         v-model="useSR"
         size="large"
-        active-text="启用超分辨率"
-        inactive-text="关闭超分辨率"
+        active-text="启用超分"
+        inactive-text="关闭超分"
       />
       </div>
       <div style="border: 1px solid #dcdfe6; padding: 15px; border-radius: 6px;">
@@ -336,12 +339,136 @@
 
       </div>
     </div>
+  </n-tab-pane>
+ <!-- 分页 2：补帧配置 -->
+    <n-tab-pane name="fi" tab="补帧">
+      <div class="flex-container">
+      <div class="top-switch-bar" >
+        <div style="border: 1px solid #dcdfe6; padding: 15px; border-radius: 6px;">
+      <el-switch
+        v-model="useVfi"
+        size="large"
+        active-text="启用补帧"
+        inactive-text="关闭补帧"
+      />
+      </div>
+      <div style="border: 1px solid #dcdfe6; padding: 15px; border-radius: 6px;">
+      <el-switch
+        :model-value="true"
+        size="large"
+        active-text="启动半精度"
+        inactive-text="关闭半精度"
+        disabled
+      />
+      </div>
+    </div>
+
+    <div class="flex-container">
+        <div class="slider-demo-block">
+          <span class="demonstration">补帧算法</span>
+          <el-select
+            v-model="VfiMethodValue"
+            placeholder="Select"
+            @change="changeSelect"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in VfiMethod_options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+
+        <div class="flex-container" v-if="VfiMethodValue === 'Rife'">
+          <div class="slider-demo-block">
+            <span class="demonstration">推理方式(rife)</span>
+            <el-select
+              v-model="RifeInferenceValue"
+              placeholder="Select"
+              size="large"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in Inference_Vfi_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+
+          <div class="slider-demo-block">
+            <span class="demonstration">补帧模型(rife)</span>
+            <el-select
+              v-model="RifeModelValue"
+              placeholder="Select"
+              size="large"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in RifeModel_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+
+          <div class="slider-demo-block">
+            <span class="demonstration">光流尺度(rife)</span>
+            <el-select
+              v-model="RifeScaleValue"
+              placeholder="Select"
+              size="large"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="item in Scale_Vfi_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+
+          <div class="slider-demo-block">
+            <span class="demonstration">目标帧率(rife)</span>
+            <el-slider v-model="RifeMultiValue" :min="60" 
+            :max="480" show-input style="max-width: 500px;"/>
+          </div>
+
+          <div class="slider-demo-block">
+            <span class="demonstration">转场阈值(rife)</span>
+            <el-slider v-model="RifeDetectionValue" :min="0" 
+            :max="1" :step=0.1 show-input style="max-width: 500px;"/>
+          </div>
+
+          <div class="slider-demo-block">
+          <span class="demonstration">Ensemble(rife)</span>
+          <el-radio-group  v-model="RifeEnsembleValue">
+          <el-radio-button :value="true">使用</el-radio-button>
+          <el-radio-button :value="false">关闭</el-radio-button>
+          </el-radio-group>
+          </div>
+
+
+    </div>
+    </div>
+    </div>
+
+    </n-tab-pane>
+  </n-tabs>
   </template>
   
   <script setup lang="ts">
   import useSrsettingconfigStore from '@renderer/store/SrSettingsStore'
+  import useVfisettingconfigStore from '@renderer/store/VfiSettingsStore'
   import {storeToRefs} from 'pinia'
   const SrSettingStore = useSrsettingconfigStore()
+  const VfiSettingStore = useVfisettingconfigStore()
   const {
     useSR,
     SRMethodValue,
@@ -366,6 +493,17 @@
     SwinIRTileValue,
   } = storeToRefs(SrSettingStore)
 
+  const {
+    useVfi,
+    VfiMethodValue,
+    RifeInferenceValue,
+    RifeModelValue,
+    RifeScaleValue,
+    RifeMultiValue,
+    RifeEnsembleValue,
+    RifeDetectionValue
+  } = storeToRefs(VfiSettingStore)
+
   const changeSelect=(value: string) =>{
     RealcuganInferenceValue.value = 'Cuda'; 
     RealesrganInferenceValue.value = 'Cuda'; 
@@ -385,6 +523,13 @@
   // ArtCNNModel_options,
   SwinIRModel_options,
 } from '../store/SRMethod'
+
+ import {
+  VfiMethod_options,
+  Inference_Vfi_options,
+  RifeModel_options,
+  Scale_Vfi_options,
+} from '../store/VfiMethod'
   
 
   </script>

@@ -65,6 +65,7 @@ function generate_vpy(config_json,videoName) {
   vpyContent += 'import vapoursynth as vs\n'
   vpyContent += 'core = vs.core\n'
   vpyContent += 'res = core.lsmas.LWLibavSource(r"' + videoName + '")\n'
+  vpyContent +='from vsmlrt import CUGAN,RealESRGAN,Waifu2x,RIFE,ArtCNN,SwinIR,Backend\n'
 
   //前置缩放(需要在此改进色彩控制)
   if(config_json.UseResize_BeforeEnhance==true){
@@ -86,7 +87,6 @@ function generate_vpy(config_json,videoName) {
     vpyContent +='res=core.fmtc.bitdepth(res, bits=32)\n'
 
     //超分设备
-    vpyContent +='from vsmlrt import CUGAN,RealESRGAN,Waifu2x,RIFE,ArtCNN,SwinIR,Backend\n'
     if(config_json.SRMethodValue == 'Real_cugan'){
     if (config_json.RealcuganInferenceValue == 'Cuda'){vpyContent +='device_sr=Backend.ORT_CUDA()\n'}
     if (config_json.RealcuganInferenceValue == 'TensorRt'){vpyContent +='device_sr=Backend.TRT()\n'}
@@ -289,6 +289,78 @@ function generate_vpy(config_json,videoName) {
   //   config_json.SwinIRTileValue + ', model=' + model + ', backend=device_sr)\n'
   // }
 }
+
+//补帧
+if(config_json.useVfi==true){
+    vpyContent +='res = core.resize.Bicubic(clip=res,range=1,matrix_in_s="709",format=vs.RGB48)\n'
+    vpyContent +='res=core.fmtc.bitdepth(res, bits=32)\n'
+
+    if(config_json.VfiMethodValue == 'Rife'){
+    if (config_json.RifeInferenceValue == 'Cuda'){vpyContent +='device_vfi=Backend.ORT_CUDA()\n'}
+    if (config_json.RifeInferenceValue == 'TensorRt'){vpyContent +='device_vfi=Backend.TRT()\n'}
+    if (config_json.RifeInferenceValue == 'NCNN'){vpyContent +='device_vfi=Backend.NCNN_VK()\n'}
+    if (config_json.RifeInferenceValue == 'OV'){vpyContent +='device_vfi=Backend.OV_GPU()\n'}
+    }
+
+    vpyContent +='device_vfi.device_id=0\n'
+    vpyContent +='device_vfi.fp16=True\n'
+    vpyContent +='from fractions import Fraction\n'
+
+    if(config_json.VfiMethodValue=='Rife'){
+    const model_switch = {
+        'v4_0': 40,
+        'v4_2': 42,
+        'v4_3': 43,
+        'v4_4': 44,
+        'v4_5': 45,
+        'v4_6': 46,
+        'v4_7': 47,
+        'v4_8': 48,
+        'v4_9': 49,
+        'v4_10': 410,
+        'v4_11': 411,
+        'v4_12': 412,
+        'v4_12_lite': 4121,
+        'v4_13': 413,
+        'v4_13_lite': 4131,
+        'v4_14': 414,
+        'v4_14_lite': 4141,
+        'v4_15': 415,
+        'v4_15_lite': 4151,
+        'v4_16_lite': 4161,
+        'v4_17': 417,
+        'v4_17_lite': 4171,
+        'v4_18': 418,
+        'v4_19': 419,
+        'v4_20': 420,
+        'v4_21': 421,
+        'v4_22': 422,
+        'v4_22_lite': 4221,
+        'v4_23': 423,
+        'v4_24': 424,
+        'v4_25': 425,
+        'v4_25_lite': 4251,
+        'v4_25_heavy': 4252,
+        'v4_26': 426,
+        'v4_26_heavy': 4262,
+    };
+    const model = model_switch[config_json.RifeModelValue] || 40;
+    const EnsembleBool = config_json.RifeEnsembleValue ? 'True' : 'False';
+    vpyContent +='res = core.misc.SCDetect(res,threshold='+config_json.RifeDetectionValue+')\n'
+
+    vpyContent +='res_height = (32 - res.height % 32) % 32\n'
+    vpyContent +='res_width  = (32 - res.width  % 32) % 32\n'
+    vpyContent +='res = core.std.AddBorders(clip=res, right=res_width, bottom=res_height)\n'
+
+    vpyContent +='res = RIFE(res, scale=' + config_json.RifeScaleValue + ',model=' + model + ',ensemble=' + EnsembleBool +
+    ',multi=Fraction(' + config_json.RifeMultiValue +',res.fps)'+', backend=device_vfi)\n'
+
+    vpyContent +='res = core.std.Crop(clip=res, right=res_width, bottom=res_height)\n'
+
+  }
+
+}
+
 //后置缩放(需要在此改进色彩控制)
 if(config_json.UseResize_AfterEnhance== true){
   vpyContent +=

@@ -1,42 +1,51 @@
 // childProcessManager.ts
-import { ChildProcess } from 'child_process';
 
-import treeKill from 'tree-kill';
+import { ChildProcess } from 'child_process'
+import kill from 'tree-kill'
 
-export const childProcesses: ChildProcess[] = [];
+const childProcesses: ChildProcess[] = []
 
+/**
+ * 添加子进程
+ */
 export function addProcess(proc: ChildProcess) {
-  childProcesses.push(proc);
+  childProcesses.push(proc)
 }
 
+/**
+ * 移除子进程
+ */
 export function removeProcess(proc: ChildProcess) {
-  const index = childProcesses.indexOf(proc);
+  const index = childProcesses.indexOf(proc)
   if (index !== -1) {
-    childProcesses.splice(index, 1);
+    childProcesses.splice(index, 1)
   }
 }
 
+/**
+ * 杀死所有子进程及其子进程树
+ */
 export function killAllProcesses() {
-  console.log(`准备终止 ${childProcesses.length} 个子进程...`);
-  childProcesses.forEach((proc) => {
-    if (proc && proc.pid) {
-      try {
-        treeKill(proc.pid, 'SIGTERM', (err) => {
+  console.log(`🧹 正在终止 ${childProcesses.length} 个子进程...`)
+
+  for (const proc of childProcesses) {
+    if (!proc.killed) {
+      const pid = proc.pid
+      if (typeof pid === 'number') {
+        console.log(`🔪 尝试终止进程树 PID=${pid}`)
+        kill(pid, 'SIGKILL', (err) => {
           if (err) {
-            console.error(`终止进程 ${proc.pid} 失败:`, err);
+            console.error(`❌ 无法终止 PID=${pid}:`, err)
           } else {
-            console.log(`已终止进程 ${proc.pid}`);
+            console.log(`✅ 成功终止 PID=${pid}`)
           }
-        });
-      } catch (err) {
-        console.error(`终止进程 ${proc.pid} 异常:`, err);
+        })
+      } else {
+        console.warn(`⚠ 无法终止进程：找不到有效 PID`)
       }
     }
-  });
+  }
 
-  // 清空
-  childProcesses.length = 0;
+  // 清空列表
+  childProcesses.length = 0
 }
-
-
-

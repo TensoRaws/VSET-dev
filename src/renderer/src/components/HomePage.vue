@@ -9,10 +9,10 @@ declare global {
   }
 }
 import { ref, onMounted, onUnmounted } from 'vue'
-import img1 from '../assets/fufu1.png'
-import img2 from '../assets/fufu2.png'
-import img3 from '../assets/fufu3.png'
-import img4 from '../assets/fufu4.png'
+import img1 from '../assets/fufu1.avif'
+import img2 from '../assets/fufu2.avif'
+import img3 from '../assets/fufu3.avif'
+import img4 from '../assets/fufu4.avif'
 const CPUInfo = ref<Array<string>>([])
 const GPUInfo = ref<Array<string>>([])
 const GPUMainInfo = ref('')

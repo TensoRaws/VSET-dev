@@ -14,13 +14,13 @@ let mainWindow: BrowserWindow | null = null
 function createWindow(): BrowserWindow {
   mainWindow = new BrowserWindow({
     width: 900,
-    height: 670,
+    height: 700,
     minWidth: 900,
     minHeight: 670,
     show: false,
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../../resources/fufu.png'),
-    title: 'VSET 4.0.1',
+    title: 'VSET 4.1.0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false

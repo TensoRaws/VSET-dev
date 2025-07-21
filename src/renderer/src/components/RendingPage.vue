@@ -35,6 +35,7 @@ import { useLogStore } from '@renderer/store/LogStore'
 // ✅ 引入状态管理（其他配置）
 import useInputconfigStore from '@renderer/store/InputStore'
 import useSrsettingconfigStore from '@renderer/store/SrSettingsStore'
+import useVfisettingconfigStore from '@renderer/store/VfiSettingsStore'
 import useFilterconfigStore from '@renderer/store/FilterStore'
 import useOutputconfigStore from '@renderer/store/OutputStote'
 
@@ -86,6 +87,19 @@ const {
   SwinIRModelValue,
   SwinIRTileValue,
 } = storeToRefs(SrSettingStore)
+
+const VfiSettingStore = useVfisettingconfigStore()
+  const {
+    useVfi,
+    VfiMethodValue,
+    RifeInferenceValue,
+    RifeModelValue,
+    RifeScaleValue,
+    RifeMultiValue,
+    RifeEnsembleValue,
+    RifeDetectionValue
+  } = storeToRefs(VfiSettingStore)
+
 
 const FilterConfigStore = useFilterconfigStore()
 const {
@@ -172,6 +186,16 @@ const StartSR = () => {
     SwinIRInferenceValue: SwinIRInferenceValue.value,
     SwinIRModelValue: SwinIRModelValue.value,
     SwinIRTileValue: SwinIRTileValue.value,
+
+    useVfi:useVfi.value,
+    VfiMethodValue:VfiMethodValue.value,
+    RifeInferenceValue:RifeInferenceValue.value,
+    RifeModelValue:RifeModelValue.value,
+    RifeScaleValue:RifeScaleValue.value,
+    RifeMultiValue:RifeMultiValue.value,
+    RifeEnsembleValue:RifeEnsembleValue.value,
+    RifeDetectionValue:RifeDetectionValue.value,
+    
     UseResize_BeforeEnhance: UseResize_BeforeEnhance.value,
     UseResize_AfterEnhance: UseResize_AfterEnhance.value,
     ResizeWidth_BeforeEnhance: ResizeWidth_BeforeEnhance.value,
