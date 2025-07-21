@@ -1,12 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog, nativeImage } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { RunCommand } from './RunCommand'
 import { killAllProcesses } from './childProcessManager'
 import ipc from './ipc'
 
-
-const path = require('path')
+const icon = join(__dirname, '../../resources/icon.ico')
 
 let mainWindow: BrowserWindow | null = null
 
@@ -18,7 +17,7 @@ function createWindow(): BrowserWindow {
     minHeight: 670,
     show: false,
     autoHideMenuBar: true,
-    icon: path.join(__dirname, '../../resources/fufu.png'),
+    icon: nativeImage.createFromPath(icon),
     title: 'VSET 4.1.0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
