@@ -5,9 +5,8 @@ import { RunCommand } from './RunCommand'
 import { killAllProcesses } from './childProcessManager'
 import ipc from './ipc'
 
-const appPath = app.getAppPath()
+
 const path = require('path')
-const fs = require('fs')
 
 let mainWindow: BrowserWindow | null = null
 
@@ -90,11 +89,6 @@ app.whenReady().then(() => {
 
   ipcMain.on('stop-all-processes', () => {
     killAllProcesses()
-  })
-
-  ipcMain.on('generate-json', (_, data) => {
-    const filePath = path.join(appPath, 'json', 'setting.json')
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
   })
 
   ipcMain.on('open-folder-dialog', (event) => {

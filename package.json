@@ -2,20 +2,6 @@
   "name": "vset",
   "productName": "VSET",
   "version": "4.2.0",
-  "build": {
-    "appId": "com.vset.ai",
-    "productName": "VSET",
-    "win": {
-      "icon": "resources/fufu.ico",
-      "target": [
-        "nsis",
-        "portable"
-      ]
-    },
-    "asarUnpack": [
-      "package/**"
-    ]
-  },
   "description": "VSET",
   "main": "./out/main/index.js",
   "author": "NangInShell",
@@ -38,8 +24,7 @@
     "dev": "electron-vite dev",
     "build": "pnpm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "pnpm run build && electron-builder --dir",
-    "build:win": "pnpm run build && electron-builder --win"
+    "build:win": "pnpm run build && electron-builder --win --dir"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
@@ -63,7 +48,7 @@
     "@rushstack/eslint-patch": "^1.12.0",
     "@types/node": "^24.0.15",
     "@vicons/ionicons5": "^0.13.0",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@vitejs/plugin-vue": "^5.1.4",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
     "electron": "^27.3.11",
