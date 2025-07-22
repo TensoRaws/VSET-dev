@@ -1,6 +1,7 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "composite": true,
     "baseUrl": ".",
     "paths": {

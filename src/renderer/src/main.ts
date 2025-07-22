@@ -1,20 +1,13 @@
-import ElementPlus from 'element-plus'
-import naive from 'naive-ui'
-import { createPinia } from 'pinia'
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 
-import router from './router/index'
-
-import 'element-plus/dist/index.css'
+// 导入 Naive UI 推荐的字体
+import 'vfonts/Lato.css'
+import 'vfonts/FiraCode.css'
 
 const app = createApp(App)
 const pinia = createPinia()
 
-app.use(naive)
-
 app.use(pinia)
-app.use(ElementPlus)
-app.use(router)
-
 app.mount('#app')

@@ -1,34 +1,54 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { RunCommand } from './RunCommand'
+import { join } from 'node:path'
+import { stat } from 'node:fs/promises'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell, session } from 'electron'
 import { killAllProcesses } from './childProcessManager'
 import ipc from './ipc'
+import { RunCommand } from './RunCommand'
 
-const appPath = app.getAppPath()
-const path = require('path')
-const fs = require('fs')
+// 修复缓存相关错误
+app.commandLine.appendSwitch('--disable-gpu-sandbox')
+app.commandLine.appendSwitch('--disable-software-rasterizer')
+app.commandLine.appendSwitch('--disable-gpu-process-crash-limit')
+app.commandLine.appendSwitch('--disable-features', 'VizDisplayCompositor')
+
+const icon = join(__dirname, '../../resources/icon.ico')
 
 let mainWindow: BrowserWindow | null = null
 
 function createWindow(): BrowserWindow {
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 700,
-    minWidth: 900,
-    minHeight: 670,
+    width: 1200,
+    height: 800,
+    minWidth: 1000,
+    minHeight: 700,
     show: false,
     autoHideMenuBar: true,
-    icon: path.join(__dirname, '../../resources/fufu.png'),
-    title: 'VSET 4.1.1',
+    frame: false, // 移除默认窗口框架
+    titleBarStyle: 'hidden', // 隐藏标题栏
+    titleBarOverlay: {
+      color: '#1a1a1a', // 标题栏背景色
+      symbolColor: '#ffffff', // 控制按钮颜色
+      height: 30 // 标题栏高度
+    },
+    backgroundColor: '#1a1a1a', // 窗口背景色
+    icon: nativeImage.createFromPath(icon),
+    title: 'VSET 4.2.0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+      contextIsolation: true,
+      nodeIntegration: false
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
+    
+    // 在开发模式下自动打开开发者工具
+    if (is.dev) {
+      mainWindow?.webContents.openDevTools()
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -38,13 +58,15 @@ function createWindow(): BrowserWindow {
 
   // ✅ 点击“关闭按钮 X”时：优雅终止进程再退出
   mainWindow.on('close', async (e) => {
-    if ((app as any).isQuitting) return
+    if ((app as any).isQuitting)
+      return
 
     e.preventDefault()
     ;(app as any).isQuitting = true
     try {
       await killAllProcesses()
-    } catch (err) {
+    }
+    catch (err) {
       console.error('❌ 终止子进程时出错：', err)
     }
 
@@ -53,9 +75,10 @@ function createWindow(): BrowserWindow {
   })
 
   // ✅ 加载主页面
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
+  if (is.dev && process.env.ELECTRON_RENDERER_URL) {
+    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
+  }
+  else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
@@ -64,13 +87,15 @@ function createWindow(): BrowserWindow {
 
 // ✅ 当用户点击任务栏关闭或调用 app.quit() 时，先清理子进程
 app.on('before-quit', async (event) => {
-  if ((app as any).isQuitting) return
+  if ((app as any).isQuitting)
+    return
   event.preventDefault()
   ;(app as any).isQuitting = true
 
   try {
     await killAllProcesses()
-  } catch (err) {
+  }
+  catch (err) {
     console.error('❌ killAllProcesses 失败：', err)
   }
 
@@ -79,11 +104,63 @@ app.on('before-quit', async (event) => {
 })
 
 // ✅ 初始化窗口和主进程监听
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   electronApp.setAppUserModelId('com.electron')
+
+  // 配置会话以避免缓存错误
+  try {
+    await session.defaultSession.clearCache()
+    await session.defaultSession.clearStorageData({
+      storages: ['filesystem', 'indexdb', 'localstorage', 'shadercache', 'websql', 'serviceworkers', 'cachestorage']
+    })
+  } catch (error) {
+    console.warn('清理缓存时出现警告:', error)
+  }
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
+  })
+
+  ipcMain.handle('selectVideoFiles', async () => {
+    const result = await dialog.showOpenDialog(mainWindow!, {
+      properties: ['openFile'],
+      filters: [
+        {
+          name: '视频文件',
+          extensions: ['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm', 'm4v', '3gp']
+        },
+        {
+          name: '所有文件',
+          extensions: ['*']
+        }
+      ]
+    })
+    
+    if (!result.canceled && result.filePaths.length > 0) {
+      const files: Array<{ path: string; name: string; size: number; type: string }> = []
+      for (const path of result.filePaths) {
+        try {
+          const stats = await stat(path)
+          files.push({
+            path: path,
+            name: path.split('\\').pop() || path.split('/').pop() || '',
+            size: stats.size,
+            type: 'video/' + (path.split('.').pop() || '')
+          })
+        } catch (error) {
+          console.error('获取文件信息失败:', error)
+          files.push({
+            path: path,
+            name: path.split('\\').pop() || path.split('/').pop() || '',
+            size: 0,
+            type: 'video/' + (path.split('.').pop() || '')
+          })
+        }
+      }
+      return files
+    }
+    
+    return []
   })
 
   ipcMain.on('execute-command', RunCommand)
@@ -92,15 +169,33 @@ app.whenReady().then(() => {
     killAllProcesses()
   })
 
-  ipcMain.on('generate-json', (_, data) => {
-    const filePath = path.join(appPath, 'json', 'setting.json')
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
+  // 窗口控制IPC监听器
+  ipcMain.on('window-minimize', () => {
+    if (mainWindow) {
+      mainWindow.minimize()
+    }
+  })
+
+  ipcMain.on('window-maximize', () => {
+    if (mainWindow) {
+      if (mainWindow.isMaximized()) {
+        mainWindow.unmaximize()
+      } else {
+        mainWindow.maximize()
+      }
+    }
+  })
+
+  ipcMain.on('window-close', () => {
+    if (mainWindow) {
+      mainWindow.close()
+    }
   })
 
   ipcMain.on('open-folder-dialog', (event) => {
     dialog
       .showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
       })
       .then((result) => {
         if (!result.canceled) {

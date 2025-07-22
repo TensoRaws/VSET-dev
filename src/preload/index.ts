@@ -6,11 +6,24 @@ const api = {
   selectDirectory: () => {
     return ipcRenderer.invoke('selectDirectory')
   },
+  selectVideoFiles: () => {
+    return ipcRenderer.invoke('selectVideoFiles')
+  },
   getCpuInfo: () => {
     return ipcRenderer.invoke('getCpuInfo')
   },
   getGpuInfo: () => {
     return ipcRenderer.invoke('getGpuInfo')
+  },
+  // 窗口控制API
+  minimizeWindow: () => {
+    ipcRenderer.send('window-minimize')
+  },
+  maximizeWindow: () => {
+    ipcRenderer.send('window-maximize')
+  },
+  closeWindow: () => {
+    ipcRenderer.send('window-close')
   },
 }
 
