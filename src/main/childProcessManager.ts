@@ -1,5 +1,6 @@
-import type { ChildProcess } from 'node:child_process'
+import { ChildProcess } from 'child_process'
 import kill from 'tree-kill'
+import { requestStop } from './RunCommand'
 
 const childProcesses: ChildProcess[] = []
 
@@ -16,6 +17,7 @@ export function removeProcess(proc: ChildProcess) {
 
 // ✅ 使用 Promise 确保等待 kill 完成
 export async function killAllProcesses(): Promise<void> {
+  requestStop()
   const promises = childProcesses.map((proc) => {
     return new Promise<void>((resolve) => {
       if (!proc.killed && typeof proc.pid === 'number') {
@@ -23,14 +25,12 @@ export async function killAllProcesses(): Promise<void> {
         kill(proc.pid, 'SIGKILL', (err) => {
           if (err) {
             console.error(`❌ 无法终止 PID=${proc.pid}:`, err)
-          }
-          else {
+          } else {
             console.log(`✅ 成功终止 PID=${proc.pid}`)
           }
           resolve()
         })
-      }
-      else {
+      } else {
         resolve()
       }
     })

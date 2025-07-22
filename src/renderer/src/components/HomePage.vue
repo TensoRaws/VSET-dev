@@ -1,10 +1,5 @@
-<script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-import img1 from '../assets/fufu1.avif'
-import img2 from '../assets/fufu2.avif'
-import img3 from '../assets/fufu3.avif'
-import img4 from '../assets/fufu4.avif'
 
+<script setup lang="ts">
 declare global {
   interface Window {
     _cachedSystemInfo?: {
@@ -13,7 +8,11 @@ declare global {
     }
   }
 }
-
+import { ref, onMounted, onUnmounted } from 'vue'
+import img1 from '../assets/fufu1.avif'
+import img2 from '../assets/fufu2.avif'
+import img3 from '../assets/fufu3.avif'
+import img4 from '../assets/fufu4.avif'
 const CPUInfo = ref<Array<string>>([])
 const GPUInfo = ref<Array<string>>([])
 const GPUMainInfo = ref('')
@@ -27,23 +26,21 @@ if (!window._cachedSystemInfo) {
   }
 }
 
-async function getCPUInfo() {
+const getCPUInfo = async () => {
   if (window._cachedSystemInfo!.cpu) {
     CPUInfo.value = window._cachedSystemInfo!.cpu
-  }
-  else {
+  } else {
     const info = await window.api.getCpuInfo()
     CPUInfo.value = info
     window._cachedSystemInfo!.cpu = info
   }
 }
 
-async function getGPUInfo() {
+const getGPUInfo = async () => {
   if (window._cachedSystemInfo!.gpu) {
     GPUInfo.value = window._cachedSystemInfo!.gpu
     GPUMainInfo.value = GPUInfo.value[0]
-  }
-  else {
+  } else {
     const info = await window.api.getGpuInfo()
     GPUInfo.value = info
     GPUMainInfo.value = GPUInfo.value[0]
@@ -51,7 +48,7 @@ async function getGPUInfo() {
   }
 }
 
-function updateTime() {
+const updateTime = () => {
   const now = new Date()
   const year = now.getFullYear()
   const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -74,34 +71,31 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (timer)
-    clearInterval(timer)
+  if (timer) clearInterval(timer)
 })
 </script>
 
 <template>
   <div class="flex-container">
     <n-carousel show-arrow>
-      <img class="carousel-img" :src="img1">
-      <img
-        class="carousel-img"
-        :src="img2"
-      >
-      <img
-        class="carousel-img"
-        :src="img3"
-      >
-      <img
-        class="carousel-img"
-        :src="img4"
-      >
-    </n-carousel>
-
+      <img class="carousel-img" :src="img1" />
+    <img
+      class="carousel-img"
+      :src="img2"
+    >
+    <img
+      class="carousel-img"
+      :src="img3"
+    >
+    <img
+      class="carousel-img"
+      :src="img4"
+    >
+  </n-carousel>
+    
     <div class="slider-demo-block">
       <span class="demonstration">CPU</span>
-      <el-tag type="primary" size="large">
-        {{ CPUInfo }}
-      </el-tag>
+      <el-tag type="primary" size="large">{{ CPUInfo }}</el-tag>
     </div>
 
     <div class="slider-demo-block">
@@ -118,9 +112,7 @@ onUnmounted(() => {
 
     <div class="slider-demo-block">
       <span class="demonstration">当前时间</span>
-      <el-tag type="success" size="large">
-        {{ currentTime }}
-      </el-tag>
+      <el-tag type="success" size="large">{{ currentTime }}</el-tag>
     </div>
   </div>
 </template>

@@ -1,9 +1,11 @@
-import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { defineStore } from 'pinia'
 
-export default defineStore('vfisettingconfig', () => {
+export default defineStore('vfisettingconfig',()=>{
+
   const useVfi = ref(false)
   const VfiMethodValue = ref('Rife')
+
 
   const RifeInferenceValue = ref('Cuda')
   const RifeModelValue = ref('v4_0')
@@ -11,6 +13,7 @@ export default defineStore('vfisettingconfig', () => {
   const RifeMultiValue = ref(120)
   const RifeEnsembleValue = ref(false)
   const RifeDetectionValue = ref(0.5)
+
 
   return {
     useVfi,
@@ -20,6 +23,6 @@ export default defineStore('vfisettingconfig', () => {
     RifeScaleValue,
     RifeMultiValue,
     RifeEnsembleValue,
-    RifeDetectionValue,
+    RifeDetectionValue
   }
 })

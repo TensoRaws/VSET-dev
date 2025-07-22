@@ -1,18 +1,19 @@
-import type { BrowserWindow } from 'electron'
-import { ipcMain } from 'electron'
-import { selectDirectory } from './directory'
-import { getCpuInfo, getGpuInfo } from './getSystemInfo'
+import {ipcMain, BrowserWindow} from 'electron'
+import{ selectDirectory } from './directory'
+import{ getGpuInfo,getCpuInfo } from './getSystemInfo'
+
 
 export default (_win: BrowserWindow) => {
-  ipcMain.handle('selectDirectory', async () => {
-    return selectDirectory()
-  })
+    ipcMain.handle('selectDirectory', async () => {
+      return selectDirectory()
+    })
 
-  ipcMain.handle('getGpuInfo', async () => {
-    return getGpuInfo()
-  })
+    ipcMain.handle('getGpuInfo', async () => {
+      return getGpuInfo()
+    })
 
-  ipcMain.handle('getCpuInfo', async () => {
-    return getCpuInfo()
-  })
-}
+    ipcMain.handle('getCpuInfo', async () => {
+      return getCpuInfo()
+    })
+
+  }

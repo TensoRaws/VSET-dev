@@ -1,21 +1,46 @@
+<template>
+  <div class="flex-container">
+    <div class="header">
+      <el-button type="success" @click="StartSR" :disabled="isRunning">
+        {{ isRunning ? '处理中...' : '启动' }}
+      </el-button>
+      <el-button type="danger" @click="clearLogs">
+        清空日志
+      </el-button>
+      <el-button type="danger" @click="stopProcesses">
+        结束进程
+      </el-button>
+    </div>
+
+    <div class="log-container">
+      <n-log
+        ref="logInstRef"
+        :log="logs"
+        language="naive-log"
+        trim
+        class="log-content"
+      />
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-// ✅ 引入 App 状态 store（isRunning）
-import { useAppStore } from '@renderer/store/AppStore'
-import useFilterconfigStore from '@renderer/store/FilterStore'
-// ✅ 引入状态管理（其他配置）
-import useInputconfigStore from '@renderer/store/InputStore'
+import { ref, nextTick, watch, onMounted, onBeforeUnmount, computed} from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMessage} from 'naive-ui'
+const message = useMessage()
 // ✅ 引入日志 store
 import { useLogStore } from '@renderer/store/LogStore'
 
-import useOutputconfigStore from '@renderer/store/OutputStote'
+// ✅ 引入状态管理（其他配置）
+import useInputconfigStore from '@renderer/store/InputStore'
 import useSrsettingconfigStore from '@renderer/store/SrSettingsStore'
 import useVfisettingconfigStore from '@renderer/store/VfiSettingsStore'
-import { useMessage } from 'naive-ui'
-import { storeToRefs } from 'pinia'
+import useFilterconfigStore from '@renderer/store/FilterStore'
+import useOutputconfigStore from '@renderer/store/OutputStote'
 
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-
-const message = useMessage()
+// ✅ 引入 App 状态 store（isRunning）
+import { useAppStore } from '@renderer/store/AppStore'
 
 // 绑定日志 store
 const logStore = useLogStore()
@@ -23,11 +48,12 @@ const logs = computed(() => logStore.logs)
 const logInstRef = ref<any>(null)
 const clearLogs = () => logStore.clearLog()
 
+
 // 绑定 app 状态 store
 const appStore = useAppStore()
 const isRunning = computed(() => appStore.isRunning)
 
-function stopProcesses() {
+const stopProcesses = () => {
   window.electron.ipcRenderer.send('stop-all-processes')
   message.warning('已请求终止所有子进程')
   appStore.setRunning(false)
@@ -55,7 +81,7 @@ const {
 
   Waifu2xInferenceValue,
   Waifu2xModelValue,
-  Waifu2xTileValue,
+  Waifu2xTileValue, 
 
   SwinIRInferenceValue,
   SwinIRModelValue,
@@ -63,16 +89,17 @@ const {
 } = storeToRefs(SrSettingStore)
 
 const VfiSettingStore = useVfisettingconfigStore()
-const {
-  useVfi,
-  VfiMethodValue,
-  RifeInferenceValue,
-  RifeModelValue,
-  RifeScaleValue,
-  RifeMultiValue,
-  RifeEnsembleValue,
-  RifeDetectionValue,
-} = storeToRefs(VfiSettingStore)
+  const {
+    useVfi,
+    VfiMethodValue,
+    RifeInferenceValue,
+    RifeModelValue,
+    RifeScaleValue,
+    RifeMultiValue,
+    RifeEnsembleValue,
+    RifeDetectionValue
+  } = storeToRefs(VfiSettingStore)
+
 
 const FilterConfigStore = useFilterconfigStore()
 const {
@@ -89,7 +116,7 @@ const {
   ReduceLeft_AfterEnhance,
   ReduceRight_AfterEnhance,
   ReduceOn_AfterEnhance,
-  ReduceDown_AfterEnhance,
+  ReduceDown_AfterEnhance
 } = storeToRefs(FilterConfigStore)
 
 const OutputConfigStore = useOutputconfigStore()
@@ -102,11 +129,11 @@ const {
   AudioContainer,
   isUseCrf,
   isSaveAudio,
-  outputfolder,
+  outputfolder
 } = storeToRefs(OutputConfigStore)
 
 // ✅ IPC 输出回调
-function handleOutput(_, msg: string) {
+const handleOutput = (_, msg: string) => {
   logStore.appendLog(msg)
 }
 
@@ -126,12 +153,12 @@ onBeforeUnmount(() => {
 })
 
 // ✅ 启动渲染流程
-function StartSR() {
+const StartSR = () => {
   if (!outputfolder.value) {
-    message.info(
-      '缺少输出文件夹，请到输出界面选择视频文件输出后的保存位置。',
-      { duration: 5000 },
-    )
+     message.info(
+          '缺少输出文件夹，请到输出界面选择视频文件输出后的保存位置。',
+          { duration: 5000 }
+        )
     return // 终止后续执行
   }
   appStore.setRunning(true) // ✅ 设置为运行中，禁用按钮
@@ -153,22 +180,22 @@ function StartSR() {
     // ArtCNNInferenceValue: ArtCNNInferenceValue.value,
     // ArtCNNModelValue: ArtCNNModelValue.value,
     // ArtCNNTileValue: ArtCNNTileValue.value,
-    Waifu2xInferenceValue: Waifu2xInferenceValue.value,
-    Waifu2xModelValue: Waifu2xModelValue.value,
-    Waifu2xTileValue: Waifu2xTileValue.value,
+    Waifu2xInferenceValue:Waifu2xInferenceValue.value,
+    Waifu2xModelValue:Waifu2xModelValue.value,
+    Waifu2xTileValue:Waifu2xTileValue.value, 
     SwinIRInferenceValue: SwinIRInferenceValue.value,
     SwinIRModelValue: SwinIRModelValue.value,
     SwinIRTileValue: SwinIRTileValue.value,
 
-    useVfi: useVfi.value,
-    VfiMethodValue: VfiMethodValue.value,
-    RifeInferenceValue: RifeInferenceValue.value,
-    RifeModelValue: RifeModelValue.value,
-    RifeScaleValue: RifeScaleValue.value,
-    RifeMultiValue: RifeMultiValue.value,
-    RifeEnsembleValue: RifeEnsembleValue.value,
-    RifeDetectionValue: RifeDetectionValue.value,
-
+    useVfi:useVfi.value,
+    VfiMethodValue:VfiMethodValue.value,
+    RifeInferenceValue:RifeInferenceValue.value,
+    RifeModelValue:RifeModelValue.value,
+    RifeScaleValue:RifeScaleValue.value,
+    RifeMultiValue:RifeMultiValue.value,
+    RifeEnsembleValue:RifeEnsembleValue.value,
+    RifeDetectionValue:RifeDetectionValue.value,
+    
     UseResize_BeforeEnhance: UseResize_BeforeEnhance.value,
     UseResize_AfterEnhance: UseResize_AfterEnhance.value,
     ResizeWidth_BeforeEnhance: ResizeWidth_BeforeEnhance.value,
@@ -191,7 +218,7 @@ function StartSR() {
     AudioContainer: AudioContainer.value,
     isUseCrf: isUseCrf.value,
     isSaveAudio: isSaveAudio.value,
-    outputfolder: outputfolder.value,
+    outputfolder: outputfolder.value
   }
 
   window.electron.ipcRenderer.send('generate-json', jsonData)
@@ -205,32 +232,6 @@ watch(() => logs.value, () => {
   })
 })
 </script>
-
-<template>
-  <div class="flex-container">
-    <div class="header">
-      <el-button type="success" :disabled="isRunning" @click="StartSR">
-        {{ isRunning ? '处理中...' : '启动' }}
-      </el-button>
-      <el-button type="danger" @click="clearLogs">
-        清空日志
-      </el-button>
-      <el-button type="danger" @click="stopProcesses">
-        结束进程
-      </el-button>
-    </div>
-
-    <div class="log-container">
-      <n-log
-        ref="logInstRef"
-        :log="logs"
-        language="naive-log"
-        trim
-        class="log-content"
-      />
-    </div>
-  </div>
-</template>
 
 <style scoped>
 .flex-container {
