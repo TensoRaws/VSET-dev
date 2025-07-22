@@ -1,12 +1,12 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import naive from 'naive-ui'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import App from './App.vue'
 
-import naive from 'naive-ui'
+import router from './router/index'
 
-import router from "./router/index"
+import 'element-plus/dist/index.css'
 
 const app = createApp(App)
 const pinia = createPinia()

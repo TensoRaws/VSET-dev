@@ -38,7 +38,7 @@ const VsmlrtTile_options = [
   {
     value: '4',
     label: '4',
-  }
+  },
 ]
 
 const Inference_options = [
@@ -57,7 +57,7 @@ const Inference_options = [
   {
     value: 'OV',
     label: 'OV',
-  }
+  },
 ]
 
 const RealcuganModel_options = [
@@ -178,8 +178,6 @@ const RealesrganModel_options = [
   },
 ]
 
-
-
 const RealesrganScale_options = [
   {
     value: '2',
@@ -259,7 +257,6 @@ const Waifu2xModel_options = [
   { value: 'photo_noise3', label: 'photo_noise3' },
   { value: 'photo_scale2.0x', label: 'photo_scale2.0x' },
 
-
   { value: 'upconv_7_anime_style_art_rgb_noise0_scale2.0x', label: 'upconv_7_anime_style_art_rgb_noise0_scale2.0x' },
   { value: 'upconv_7_anime_style_art_rgb_noise1_scale2.0x', label: 'upconv_7_anime_style_art_rgb_noise1_scale2.0x' },
   { value: 'upconv_7_anime_style_art_rgb_noise2_scale2.0x', label: 'upconv_7_anime_style_art_rgb_noise2_scale2.0x' },
@@ -272,13 +269,11 @@ const Waifu2xModel_options = [
   { value: 'upconv_7_photo_noise3_scale2.0x', label: 'upconv_7_photo_noise3_scale2.0x' },
   { value: 'upconv_7_photo_scale2.0x_', label: 'upconv_7_photo_scale2.0x_' },
 
-
   { value: 'upresnet10_noise0_scale2.0x', label: 'upresnet10_noise0_scale2.0x' },
   { value: 'upresnet10_noise1_scale2.0x', label: 'upresnet10_noise1_scale2.0x' },
   { value: 'upresnet10_noise2_scale2.0x', label: 'upresnet10_noise2_scale2.0x' },
   { value: 'upresnet10_noise3_scale2.0x', label: 'upresnet10_noise3_scale2.0x' },
   { value: 'upresnet10_scale2.0x', label: 'upresnet10_scale2.0x' },
-
 
   { value: 'cunet_noise0', label: 'cunet_noise0' },
   { value: 'cunet_noise1', label: 'cunet_noise1' },
@@ -352,10 +347,7 @@ const SwinIRModel_options = [
   { value: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg10', label: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg10' },
   { value: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg20', label: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg20' },
   { value: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg30', label: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg30' },
-  { value: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg40', label: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg40' }
+  { value: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg40', label: 'colorCAR_DFWB_s126w7_SwinIR_M_jpeg40' },
 ]
 
-
-
-export { SRMethod_options, VsmlrtTile_options, Inference_options, RealcuganModel_options,RealesrganModel_options,
-    RealesrganScale_options, SwinIRModel_options, Waifu2xModel_options};
+export { Inference_options, RealcuganModel_options, RealesrganModel_options, RealesrganScale_options, SRMethod_options, SwinIRModel_options, VsmlrtTile_options, Waifu2xModel_options }

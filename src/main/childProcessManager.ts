@@ -1,4 +1,4 @@
-import { ChildProcess } from 'child_process'
+import type { ChildProcess } from 'node:child_process'
 import kill from 'tree-kill'
 
 const childProcesses: ChildProcess[] = []
@@ -23,12 +23,14 @@ export async function killAllProcesses(): Promise<void> {
         kill(proc.pid, 'SIGKILL', (err) => {
           if (err) {
             console.error(`❌ 无法终止 PID=${proc.pid}:`, err)
-          } else {
+          }
+          else {
             console.log(`✅ 成功终止 PID=${proc.pid}`)
           }
           resolve()
         })
-      } else {
+      }
+      else {
         resolve()
       }
     })

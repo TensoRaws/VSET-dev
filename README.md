@@ -7,8 +7,6 @@
 
 <img src="https://github.com/user-attachments/assets/f8718b1a-acd4-4804-ae11-965d4240b222" width="300">
 
-
-
 ## [💬 感谢发电名单](https://github.com/NangInShell/VSET/blob/main/Thanks.md)
 感谢发电大佬们对本项目的支持以及所有测试用户的测试支持。以上链接包含了发电者名单和项目支出详情。
 
@@ -59,8 +57,6 @@ VSET是一款可以提升视频分辨率(Super-Resolution)的工具，**在Windo
 ![1377c43d7db5be4479c1d5616395fe94](https://github.com/user-attachments/assets/7fbc7a1f-c0fa-45d5-b388-9b7f6a6c69a2)  
 ![abe803243d32c9143a0a4fedb39c4f9e](https://github.com/user-attachments/assets/a1bd51af-46cc-46e4-a0b1-b900c6ac992e)  
 ![c4bb93b010ce0df8dedc45988ab57d08](https://github.com/user-attachments/assets/4769f2a8-624e-442a-8fc0-54e568048984)  
-
-
 
 ## 相关链接
 [爱发电](https://afdian.tv/a/NangInShell)  

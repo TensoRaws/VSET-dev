@@ -1,9 +1,9 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, nativeImage } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { RunCommand } from './RunCommand'
+import { join } from 'node:path'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell } from 'electron'
 import { killAllProcesses } from './childProcessManager'
 import ipc from './ipc'
+import { RunCommand } from './RunCommand'
 
 const icon = join(__dirname, '../../resources/icon.ico')
 
@@ -21,8 +21,8 @@ function createWindow(): BrowserWindow {
     title: 'VSET 4.1.0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      sandbox: false,
+    },
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -36,13 +36,15 @@ function createWindow(): BrowserWindow {
 
   // ✅ 点击“关闭按钮 X”时：优雅终止进程再退出
   mainWindow.on('close', async (e) => {
-    if ((app as any).isQuitting) return
+    if ((app as any).isQuitting)
+      return
 
     e.preventDefault()
     ;(app as any).isQuitting = true
     try {
       await killAllProcesses()
-    } catch (err) {
+    }
+    catch (err) {
       console.error('❌ 终止子进程时出错：', err)
     }
 
@@ -51,9 +53,10 @@ function createWindow(): BrowserWindow {
   })
 
   // ✅ 加载主页面
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-  } else {
+  if (is.dev && process.env.ELECTRON_RENDERER_URL) {
+    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
+  }
+  else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
@@ -62,13 +65,15 @@ function createWindow(): BrowserWindow {
 
 // ✅ 当用户点击任务栏关闭或调用 app.quit() 时，先清理子进程
 app.on('before-quit', async (event) => {
-  if ((app as any).isQuitting) return
+  if ((app as any).isQuitting)
+    return
   event.preventDefault()
   ;(app as any).isQuitting = true
 
   try {
     await killAllProcesses()
-  } catch (err) {
+  }
+  catch (err) {
     console.error('❌ killAllProcesses 失败：', err)
   }
 
@@ -93,7 +98,7 @@ app.whenReady().then(() => {
   ipcMain.on('open-folder-dialog', (event) => {
     dialog
       .showOpenDialog({
-        properties: ['openDirectory']
+        properties: ['openDirectory'],
       })
       .then((result) => {
         if (!result.canceled) {
