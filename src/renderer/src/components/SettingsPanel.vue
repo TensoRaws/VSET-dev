@@ -44,7 +44,8 @@ watch(currentTab, (newTab) => {
       v-model:value="currentTab" 
       type="line" 
       animated
-      :tab-style="{ padding: '12px 16px' }"
+      :tab-style="{ padding: '12px 6px' }"
+      :tabs-padding="30"
       class="h-full flex flex-col"
     >
       <n-tab-pane name="enhance" class="h-full">
@@ -56,7 +57,7 @@ watch(currentTab, (newTab) => {
             <span class="text-sm font-medium">{{ t('settings.enhance') }}</span>
           </div>
         </template>
-        <div class="h-full overflow-y-auto p-4">
+        <div class="h-full overflow-y-auto p-4" >
           <EnhanceSettings />
         </div>
       </n-tab-pane>

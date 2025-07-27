@@ -71,14 +71,12 @@ async function selectDirectory() {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto" :class="isDark ? 'bg-gray-900' : 'bg-gray-50'">
-    <NSpace vertical :size="16" class="p-4">
+  <div :class="isDark ? 'bg-gray-900' : 'bg-white'">
+    <NSpace vertical :size="16">
       <!-- 编码设置 -->
       <NCard 
-        :title="t('output.encodingSettings')" 
-        :bordered="false"
-        class="shadow-sm"
-        :class="isDark ? 'bg-gray-800' : 'bg-white'"
+        :title="t('output.encodingSettings')"
+        size="small"
       >
         <NSpace vertical :size="16">
           <NFormItem :label="t('output.encoderFormat')" label-placement="left">
@@ -155,10 +153,8 @@ async function selectDirectory() {
 
       <!-- 音频设置 -->
       <NCard 
-        :title="t('output.audioSettings')" 
-        :bordered="false"
-        class="shadow-sm"
-        :class="isDark ? 'bg-gray-800' : 'bg-white'"
+        :title="t('output.audioSettings')"
+        size="small"
       >
         <NSpace vertical :size="16">
           <NFormItem :label="t('output.audioProcessing')" label-placement="left">
@@ -182,10 +178,8 @@ async function selectDirectory() {
 
       <!-- 输出设置 -->
       <NCard 
-        :title="t('output.outputSettings')" 
-        :bordered="false"
-        class="shadow-sm"
-        :class="isDark ? 'bg-gray-800' : 'bg-white'"
+        :title="t('output.outputSettings')"
+        size="small"
       >
         <NFormItem :label="t('output.outputFolder')" label-placement="top">
           <div class="flex gap-2 w-full">

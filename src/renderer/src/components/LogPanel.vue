@@ -96,7 +96,7 @@ const copyLogs = async () => {
   ]">
     <!-- 日志工具栏 -->
     <div :class="[
-      'flex items-center justify-between px-3 py-2 border-b min-h-[36px]',
+      'flex items-center justify-between px-3 py-2  min-h-[36px]',
       isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
     ]">
       <div class="flex items-center">
@@ -152,9 +152,6 @@ const copyLogs = async () => {
         :description="t('log.noLogs')"
         class="h-full flex items-center justify-center"
       >
-        <template #icon>
-          <div class="text-4xl">📝</div>
-        </template>
       </NEmpty>
       <div 
         v-for="log in formattedLogs" 
