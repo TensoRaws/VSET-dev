@@ -27,5 +27,6 @@ declare module 'vue' {
     SettingsPanel: typeof import('./src/components/SettingsPanel.vue')['default']
     ThemeSettings: typeof import('./src/components/ThemeSettings.vue')['default']
     VideoPreview: typeof import('./src/components/VideoPreview.vue')['default']
+    WindowControls: typeof import('./src/components/WindowControls.vue')['default']
   }
 }

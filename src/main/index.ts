@@ -25,12 +25,7 @@ function createWindow(): BrowserWindow {
     show: false,
     autoHideMenuBar: true,
     frame: false, // 移除默认窗口框架
-    titleBarStyle: 'hidden', // 隐藏标题栏
-    titleBarOverlay: {
-      color: '#1a1a1a', // 标题栏背景色
-      symbolColor: '#ffffff', // 控制按钮颜色
-      height: 30 // 标题栏高度
-    },
+    titleBarStyle: 'hiddenInset', // 完全隐藏标题栏
     backgroundColor: '#1a1a1a', // 窗口背景色
     icon: nativeImage.createFromPath(icon),
     title: 'VSET 4.2.0',
