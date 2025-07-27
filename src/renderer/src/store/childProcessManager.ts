@@ -1,5 +1,3 @@
-// childProcessManager.ts
-
 import { ChildProcess } from 'child_process'
 import kill from 'tree-kill'
 

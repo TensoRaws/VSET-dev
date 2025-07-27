@@ -1,6 +1,3 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-
 export default defineStore('vfisettingconfig',()=>{
 
   const useVfi = ref(false)
@@ -24,5 +21,10 @@ export default defineStore('vfisettingconfig',()=>{
     RifeMultiValue,
     RifeEnsembleValue,
     RifeDetectionValue
+  }
+}, {
+  persist: {
+    key: 'vfi-settings',
+    storage: localStorage
   }
 })

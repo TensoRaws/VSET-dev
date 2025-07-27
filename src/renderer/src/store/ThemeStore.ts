@@ -1,5 +1,3 @@
-import { ref, computed, watch } from 'vue'
-import { defineStore } from 'pinia'
 import { darkTheme, lightTheme } from 'naive-ui'
 import type { GlobalTheme, GlobalThemeOverrides } from 'naive-ui'
 
@@ -102,6 +100,15 @@ export const useThemeStore = defineStore('theme', () => {
     return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
   }
 
+  // 更新 body 类名的辅助函数
+  const updateBodyClass = () => {
+    if (typeof document !== 'undefined') {
+      const body = document.body
+      body.classList.remove('light', 'dark')
+      body.classList.add(isDark.value ? 'dark' : 'light')
+    }
+  }
+
   // 主题切换方法
   const toggleTheme = () => {
     if (themeMode.value === 'auto') {
@@ -127,74 +134,23 @@ export const useThemeStore = defineStore('theme', () => {
 
   const setThemeMode = (mode: ThemeMode) => {
     themeMode.value = mode
-    
-    // 更新 body 类名
-    if (typeof document !== 'undefined') {
-      const body = document.body
-      body.classList.remove('light', 'dark')
-      
-      if (mode === 'auto') {
-        body.classList.add(systemPrefersDark.value ? 'dark' : 'light')
-      } else {
-        body.classList.add(mode)
-      }
-    }
-    
-    // 保存到 localStorage
-    localStorage.setItem('theme-mode', mode)
+    updateBodyClass()
   }
 
   const setPrimaryColor = (color: string) => {
     primaryColor.value = color
-    localStorage.setItem('theme-primary-color', color)
   }
 
   const resetToDefaults = () => {
     themeMode.value = 'auto'
     primaryColor.value = PRESET_COLORS.blue
-    
-    // 清除 localStorage
-    localStorage.removeItem('theme-mode')
-    localStorage.removeItem('theme-primary-color')
-    
-    // 重置 body 类名
-    if (typeof document !== 'undefined') {
-      const body = document.body
-      body.classList.remove('light', 'dark')
-      body.classList.add(systemPrefersDark.value ? 'dark' : 'light')
-    }
-  }
-
-  // 初始化：从 localStorage 恢复设置
-  const initializeTheme = () => {
-    const savedMode = localStorage.getItem('theme-mode') as ThemeMode
-    const savedPrimaryColor = localStorage.getItem('theme-primary-color')
-
-    if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
-      themeMode.value = savedMode
-    }
-
-    if (savedPrimaryColor) {
-      primaryColor.value = savedPrimaryColor
-    }
-
-    // 初始化 body 类名
-    setThemeMode(themeMode.value)
+    updateBodyClass()
   }
 
   // 监听主题模式变化，更新 body 类名
   watch([isDark, themeMode], () => {
-    if (typeof document !== 'undefined') {
-      const body = document.body
-      body.classList.remove('light', 'dark')
-      body.classList.add(isDark.value ? 'dark' : 'light')
-    }
+    updateBodyClass()
   }, { immediate: true })
-
-  // 初始化主题
-  if (typeof window !== 'undefined') {
-    initializeTheme()
-  }
 
   return {
     // 状态
@@ -216,5 +172,10 @@ export const useThemeStore = defineStore('theme', () => {
     // 计算属性
     isAutoMode,
     currentThemeConfig
+  }
+}, {
+  persist: {
+    key: 'theme',
+    storage: localStorage
   }
 })

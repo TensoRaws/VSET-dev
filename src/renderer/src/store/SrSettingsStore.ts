@@ -1,6 +1,3 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-
 export default defineStore('srsettingconfig',()=>{
 
   const useSR = ref(true)
@@ -56,5 +53,10 @@ export default defineStore('srsettingconfig',()=>{
     SwinIRModelValue,
     SwinIRTileValue,
   // }
+  }
+}, {
+  persist: {
+    key: 'sr-settings',
+    storage: localStorage
   }
 })

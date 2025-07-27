@@ -1,6 +1,3 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-
 export default defineStore('outputconfig',()=>{
 
     const bitValue = ref(20)
@@ -261,5 +258,10 @@ const AudioContainer_options = ref([
 
     outputfolder
 
+  }
+}, {
+  persist: {
+    key: 'output-settings',
+    storage: localStorage
   }
 })
