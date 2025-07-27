@@ -5,12 +5,14 @@ import { CloudUploadOutline, CloseOutline, VideocamOutline } from '@vicons/ionic
 import useInputconfigStore from '@renderer/store/InputStore'
 import { storeToRefs } from 'pinia'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const inputStore = useInputconfigStore()
 const themeStore = useThemeStore()
+const { themeClasses, getIconColor, getIconColorMuted } = useThemeClasses()
 const { fileList } = storeToRefs(inputStore)
 
 const isDragOver = ref(false)
@@ -70,14 +72,14 @@ const formatFileSize = (bytes: number) => {
 <template>
   <div :class="[
     'h-full flex flex-col',
-    themeStore.isDark ? 'bg-gray-800' : 'bg-gray-50'
+    themeClasses.videoPreviewBg
   ]">
     <!-- 视频预览区域 -->
     <div v-if="hasVideo" class="h-full flex flex-col p-4">
       <!-- 视频头部 -->
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-2">
-          <n-icon size="20" :color="themeStore.isDark ? '#60a5fa' : '#3b82f6'">
+          <n-icon size="20" :color="getIconColor()">
             <VideocamOutline />
           </n-icon>
           <n-text class="text-lg font-semibold">{{ t('video.sourceFilePreview') }}</n-text>
@@ -100,7 +102,7 @@ const formatFileSize = (bytes: number) => {
       <!-- 视频播放器 -->
       <div :class="[
         'flex-1 rounded-lg overflow-hidden mb-4',
-        themeStore.isDark ? 'bg-gray-900' : 'bg-white'
+        themeClasses.bgPrimary
       ]">
         <video 
           ref="videoRef"
@@ -115,7 +117,7 @@ const formatFileSize = (bytes: number) => {
       <n-card 
         size="small" 
         :bordered="false"
-        :class="themeStore.isDark ? 'bg-gray-700' : 'bg-white'"
+        :class="themeClasses.videoCardBg"
       >
         <n-space vertical size="small">
           <div class="flex justify-between items-center">
@@ -142,9 +144,9 @@ const formatFileSize = (bytes: number) => {
         :class="[
           'w-full max-w-md border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300',
           isDragOver 
-            ? (themeStore.isDark ? 'border-blue-400 bg-blue-900/20' : 'border-blue-400 bg-blue-50')
-            : (themeStore.isDark ? 'border-gray-600 bg-gray-800/50' : 'border-gray-300 bg-gray-50'),
-          'hover:' + (themeStore.isDark ? 'border-blue-400 bg-blue-900/10' : 'border-blue-400 bg-blue-50')
+            ? themeClasses.videoCardSelected
+            : themeClasses.videoCardDefault,
+          themeClasses.videoCardHover
         ]"
         @dragover="handleDragOver"
         @dragleave="handleDragLeave"
@@ -154,7 +156,7 @@ const formatFileSize = (bytes: number) => {
         <n-space vertical size="large" align="center">
           <n-icon 
             size="64" 
-            :color="themeStore.isDark ? '#6b7280' : '#9ca3af'"
+            :color="getIconColorMuted()"
           >
             <CloudUploadOutline />
           </n-icon>

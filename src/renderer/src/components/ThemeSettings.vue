@@ -3,7 +3,7 @@
     <NSpace vertical size="large">
       <!-- 主题模式设置 -->
       <div>
-        <h4 :class="themeStore.isDark ? 'text-gray-200' : 'text-gray-800'" 
+        <h4 :class="themeClasses.textPrimary" 
             style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
           {{ t('settings.themeMode') }}
         </h4>
@@ -42,7 +42,7 @@
         
         <!-- 自动模式说明 -->
         <div v-if="themeStore.isAutoMode" 
-             :class="themeStore.isDark ? 'text-gray-400' : 'text-gray-500'"
+             :class="themeClasses.textMuted"
              style="margin-top: 8px; font-size: 12px;">
           {{ t('settings.autoModeDesc') }}
         </div>
@@ -52,7 +52,7 @@
 
       <!-- 主题色设置 -->
       <div>
-        <h4 :class="themeStore.isDark ? 'text-gray-200' : 'text-gray-800'" 
+        <h4 :class="themeClasses.textPrimary" 
             style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
           {{ t('settings.primaryColor') }}
         </h4>
@@ -60,7 +60,7 @@
         <!-- 预设颜色 -->
         <div style="margin-bottom: 16px;">
           <div style="margin-bottom: 8px; font-size: 13px;" 
-               :class="themeStore.isDark ? 'text-gray-300' : 'text-gray-600'">
+               :class="themeClasses.textSecondary">
             {{ t('settings.presetColors') }}
           </div>
           <div class="color-palette">
@@ -83,7 +83,7 @@
         <!-- 自定义颜色 -->
         <div>
           <div style="margin-bottom: 8px; font-size: 13px;" 
-               :class="themeStore.isDark ? 'text-gray-300' : 'text-gray-600'">
+               :class="themeClasses.textSecondary">
             {{ t('settings.customColor') }}
           </div>
           <NSpace>
@@ -117,7 +117,8 @@ import {
   NRadio, 
   NIcon, 
   NColorPicker, 
-  NInput
+  NInput,
+  NDivider
 } from 'naive-ui'
 import { 
   SunnyOutline, 
@@ -126,11 +127,13 @@ import {
   CheckmarkOutline
 } from '@vicons/ionicons5'
 import { useThemeStore, PRESET_COLORS } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useAppI18n } from '@renderer/composables/useAppI18n'
 
 // 组合式函数
 const themeStore = useThemeStore()
 const { t } = useAppI18n()
+const { themeClasses } = useThemeClasses()
 
 // 方法
 const handleColorInput = (value: string) => {

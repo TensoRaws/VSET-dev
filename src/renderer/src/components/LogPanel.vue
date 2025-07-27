@@ -2,6 +2,7 @@
 import { ref, computed, nextTick, watch } from 'vue'
 import { useLogStore } from '@renderer/store/LogStore'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { storeToRefs } from 'pinia'
 import { NButton, NSpace, NEmpty, useMessage } from 'naive-ui'
 import { 
@@ -15,6 +16,7 @@ const { t } = useAppI18n()
 
 const logStore = useLogStore()
 const themeStore = useThemeStore()
+const { themeClasses } = useThemeClasses()
 const { logs } = storeToRefs(logStore)
 const { isDark } = storeToRefs(themeStore)
 const message = useMessage()
@@ -92,17 +94,17 @@ const copyLogs = async () => {
 <template>
   <div :class="[
     'h-full flex flex-col',
-    isDark ? 'bg-gray-900' : 'bg-gray-50'
+    themeClasses.bgSecondary
   ]">
     <!-- 日志工具栏 -->
     <div :class="[
       'flex items-center justify-between px-3 py-2  min-h-[36px]',
-      isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+      themeClasses.cardBg
     ]">
       <div class="flex items-center">
         <span :class="[
           'text-xs',
-          isDark ? 'text-gray-400' : 'text-gray-600'
+          themeClasses.textMuted
         ]">
           {{ t('log.logCount', { count: formattedLogs.length }) }}
         </span>
@@ -144,7 +146,7 @@ const copyLogs = async () => {
       ref="logContainer"
       :class="[
         'flex-1 overflow-y-auto p-2 font-mono text-sm leading-relaxed',
-        isDark ? 'bg-gray-900' : 'bg-gray-50'
+        themeClasses.bgSecondary
       ]"
     >
       <NEmpty 
@@ -169,7 +171,7 @@ const copyLogs = async () => {
       >
         <span :class="[
           'mr-2 flex-shrink-0 text-xs',
-          isDark ? 'text-gray-500' : 'text-gray-400'
+          themeClasses.textMuted
         ]">
           {{ log.timestamp }}
         </span>

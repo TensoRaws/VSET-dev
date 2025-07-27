@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useOutputconfigStore from '@renderer/store/OutputStote'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { storeToRefs } from 'pinia'
 import { computed, h } from 'vue'
 import { NCard, NSelect, NRadioGroup, NRadio, NSlider, NInputNumber, NButton, NInput, NSpace, NFormItem, NGrid, NGridItem } from 'naive-ui'
@@ -12,6 +13,7 @@ const { t } = useI18n()
 const OutputConfigStore = useOutputconfigStore()
 const themeStore = useThemeStore()
 const { isDark } = storeToRefs(themeStore)
+const { themeClasses } = useThemeClasses()
 
 const {
   bitValue,
@@ -71,7 +73,7 @@ async function selectDirectory() {
 </script>
 
 <template>
-  <div :class="isDark ? 'bg-gray-900' : 'bg-white'">
+  <div :class="themeClasses.bgPrimary">
     <NSpace vertical :size="16">
       <!-- 编码设置 -->
       <NCard 

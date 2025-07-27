@@ -13,7 +13,7 @@
       <!-- 语言设置 -->
       <div>
         <h4 
-          :class="themeStore.isDark ? 'text-gray-200' : 'text-gray-800'" 
+          :class="themeClasses.textSecondary" 
           style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;"
         >
           {{ t('settings.language') }}
@@ -38,6 +38,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import ThemeSettings from './ThemeSettings.vue'
 
 // Props
@@ -57,6 +58,7 @@ const emit = defineEmits<Emits>()
 // Composables
 const { t, locale } = useI18n()
 const themeStore = useThemeStore()
+const { themeClasses } = useThemeClasses()
 
 // 计算属性
 const visible = computed({

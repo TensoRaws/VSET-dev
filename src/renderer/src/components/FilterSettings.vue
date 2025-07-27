@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useFilterconfigStore from '@renderer/store/FilterStore'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useAppI18n } from '@renderer/composables/useAppI18n'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
@@ -21,6 +22,7 @@ const FilterConfigStore = useFilterconfigStore()
 const themeStore = useThemeStore()
 const { t } = useAppI18n()
 const { isDark } = storeToRefs(themeStore)
+const { themeClasses } = useThemeClasses()
 
 const {
   UseResize_BeforeEnhance,
@@ -73,7 +75,7 @@ const afterEnhanceCropValues = computed({
 </script>
 
 <template>
-  <div :class="[isDark ? 'bg-gray-900' : 'bg-white']">
+  <div :class="themeClasses.bgPrimary">
     <NTabs type="segment" animated>
       <NTabPane name="preprocessing" :tab="t('filter.preprocessing')">
         <div class="space-y-4">

@@ -8,13 +8,13 @@
           <!-- 视频预览框 -->
           <div 
             class="relative border-2 border-dashed transition-all duration-300"
-            :class="isDark ? 'border-gray-600 bg-gray-800' : 'border-gray-300 bg-gray-100'"
+            :class="themeClasses.cropVisualizerBorder"
             style="width: 240px; height: 135px;"
           >
             <!-- 视频内容区域 -->
             <div 
               class="absolute flex items-center justify-center text-xs font-medium transition-all duration-300"
-              :class="isDark ? 'bg-blue-900/30 text-blue-300' : 'bg-blue-50 text-blue-600'"
+              :class="themeClasses.cropVisualizerContent"
               :style="{
                 top: `${cropValues.top}px`,
                 bottom: `${cropValues.bottom}px`,
@@ -139,6 +139,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useAppI18n } from '@renderer/composables/useAppI18n'
 import { storeToRefs } from 'pinia'
 import {
@@ -185,6 +186,7 @@ const emit = defineEmits<{
 // 组合式函数
 const themeStore = useThemeStore()
 const { t } = useAppI18n()
+const { themeClasses } = useThemeClasses()
 
 // 计算属性
 const isDark = computed(() => themeStore.isDark)

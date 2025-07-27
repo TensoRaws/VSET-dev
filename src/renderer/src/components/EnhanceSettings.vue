@@ -2,6 +2,7 @@
 import useSrSettingConfigStore from '@renderer/store/SrSettingsStore'
 import useVfiSettingConfigStore from '@renderer/store/VfiSettingsStore'
 import {useThemeStore} from '@renderer/store/ThemeStore'
+import {useThemeClasses} from '@renderer/composables/useThemeClasses'
 import {useI18n} from 'vue-i18n'
 import {storeToRefs} from 'pinia'
 import {
@@ -41,6 +42,7 @@ import {
 const SrSettingStore = useSrSettingConfigStore()
 const VfiSettingStore = useVfiSettingConfigStore()
 const themeStore = useThemeStore()
+const {themeClasses} = useThemeClasses()
 const {t} = useI18n()
 
 const {isDark} = storeToRefs(themeStore)
@@ -84,7 +86,7 @@ function changeSelect(value: string) {
 </script>
 
 <template>
-  <div :class="[isDark ? 'bg-gray-900' : 'bg-white']">
+  <div :class="themeClasses.bgPrimary">
     <NTabs type="segment" animated>
       <NTabPane name="sr" :tab="t('enhance.srSettings')">
         <div class="space-y-4">
