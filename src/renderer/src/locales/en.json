@@ -1,0 +1,103 @@
+{
+  "app": {
+    "title": "VSET - Video Super Resolution Tool",
+    "settings": "Settings"
+  },
+  "window": {
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "closeWindow": "Close Window"
+  },
+  "log": {
+    "output": "Log Output",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "logCount": "{count} logs",
+    "autoScroll": "Auto Scroll",
+    "copyLogs": "Copy Logs",
+    "clearLogs": "Clear Logs",
+    "copySuccess": "Logs copied to clipboard",
+    "copyFailed": "Copy failed",
+    "noLogs": "No log output"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "lightThemeDesc": "Light Theme",
+    "darkThemeDesc": "Dark Theme",
+    "enhance": "Enhancement Settings",
+    "filter": "Filter Settings",
+    "output": "Output Settings",
+    "chinese": "Chinese",
+    "english": "English"
+  },
+  "video": {
+    "sourceFilePreview": "Source File Preview",
+    "fileName": "File Name",
+    "size": "Size",
+    "type": "Type",
+    "uploadVideoFile": "Upload Video File",
+    "dragOrClick": "Drag video files here, or click to select files",
+    "supportedFormats": "Supported formats: MP4, AVI, MOV, MKV, WMV",
+    "selectFileError": "Failed to select file:"
+  },
+  "enhance": {
+    "srSettings": "Super Resolution Settings",
+    "vfiSettings": "Video Frame Interpolation Settings",
+    "srConfig": "SR Configuration",
+    "enableSR": "Enable Super Resolution",
+    "halfPrecision": "Half Precision",
+    "algorithmSelection": "Algorithm Selection",
+    "srAlgorithm": "SR Algorithm",
+    "realcuganParams": "Real_cugan Parameters",
+    "realesrganParams": "Real_esrgan Parameters",
+    "waifu2xParams": "Waifu2x Parameters",
+    "swinirParams": "SwinIR Parameters",
+    "inferenceMethod": "Inference Method",
+    "srModel": "SR Model",
+    "tileCount": "Tile Count",
+    "intensityParam": "Intensity Parameter",
+    "scaleMultiplier": "Scale Multiplier",
+    "vfiConfig": "Frame Interpolation Configuration",
+    "enableVfi": "Enable Frame Interpolation",
+    "vfiAlgorithm": "Frame Interpolation Algorithm",
+    "rifeParams": "RIFE Parameters",
+    "vfiModel": "Frame Interpolation Model",
+    "opticalFlowScale": "Optical Flow Scale",
+    "targetFramerate": "Target Frame Rate",
+    "sceneChangeThreshold": "Scene Change Threshold",
+    "enable": "Enable",
+    "disable": "Disable"
+  },
+  "filter": {
+    "preprocessing": "Preprocessing (Before AI Rendering)",
+    "postprocessing": "Postprocessing (After AI Rendering)",
+    "videoResize": "Video Resize",
+    "width": "Width",
+    "height": "Height",
+    "blackBorderProcessing": "Black Border Processing",
+    "left": "Left",
+    "right": "Right",
+    "top": "Top",
+    "bottom": "Bottom"
+  },
+  "output": {
+    "encodingSettings": "Encoding Settings",
+    "encoderFormat": "Encoder/Format",
+    "qualityPreset": "Quality Preset",
+    "qualityControl": "Quality Control",
+    "bitrate": "Bitrate",
+    "bitrateM": "Bitrate (M)",
+    "videoContainer": "Video Container",
+    "audioSettings": "Audio Settings",
+    "audioProcessing": "Audio Processing",
+    "keep": "Keep",
+    "recompress": "Recompress",
+    "audioFormat": "Audio Format",
+    "outputSettings": "Output Settings",
+    "outputFolder": "Output Folder",
+    "setOutputFolder": "Please set output folder",
+    "select": "Select",
+    "selectDirectoryError": "Failed to select directory:"
+  }
+}

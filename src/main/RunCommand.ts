@@ -449,13 +449,13 @@ export async function RunCommand(event, config_json): Promise<void> {
       let stderrOut = ''; // 用于保存 stderr 内容
 
       vspipeInfoProcess.stdout.on('data', (data: Buffer) => {
-        const str = iconv.decode(data, 'gbk');;
+        const str = iconv.decode(data, 'gbk');
         vspipeOut += str;
         event.sender.send('ffmpeg-output', `${str}`);
       });
 
       vspipeInfoProcess.stderr.on('data', (data: Buffer) => {
-        const str = iconv.decode(data, 'gbk');;
+        const str = iconv.decode(data, 'gbk');
         stderrOut += str;
         event.sender.send('ffmpeg-output', `${str}`);
       });

@@ -9,6 +9,9 @@ import {
   CopyOutline, 
   TrashOutline 
 } from '@vicons/ionicons5'
+import { useAppI18n } from '@renderer/composables/useAppI18n'
+
+const { t } = useAppI18n()
 
 const logStore = useLogStore()
 const themeStore = useThemeStore()
@@ -78,10 +81,10 @@ const toggleAutoScroll = () => {
 const copyLogs = async () => {
   try {
     await navigator.clipboard.writeText(logs.value)
-    message.success('日志已复制到剪贴板')
+    message.success(t('log.copySuccess'))
   } catch (error) {
-    console.error('复制失败:', error)
-    message.error('复制失败')
+    console.error('Copy failed:', error)
+    message.error(t('log.copyFailed'))
   }
 }
 </script>
@@ -101,7 +104,7 @@ const copyLogs = async () => {
           'text-xs',
           isDark ? 'text-gray-400' : 'text-gray-600'
         ]">
-          {{ formattedLogs.length }} 条日志
+          {{ t('log.logCount', { count: formattedLogs.length }) }}
         </span>
       </div>
       <NSpace size="small">
@@ -109,7 +112,7 @@ const copyLogs = async () => {
           size="small"
           :type="autoScroll ? 'primary' : 'default'"
           @click="toggleAutoScroll"
-          title="自动滚动"
+          :title="t('log.autoScroll')"
         >
           <template #icon>
             <ArrowDownOutline />
@@ -118,7 +121,7 @@ const copyLogs = async () => {
         <NButton
           size="small"
           @click="copyLogs"
-          title="复制日志"
+          :title="t('log.copyLogs')"
         >
           <template #icon>
             <CopyOutline />
@@ -127,7 +130,7 @@ const copyLogs = async () => {
         <NButton
           size="small"
           @click="clearLogs"
-          title="清空日志"
+          :title="t('log.clearLogs')"
         >
           <template #icon>
             <TrashOutline />
@@ -146,7 +149,7 @@ const copyLogs = async () => {
     >
       <NEmpty 
         v-if="formattedLogs.length === 0" 
-        description="暂无日志输出"
+        :description="t('log.noLogs')"
         class="h-full flex items-center justify-center"
       >
         <template #icon>

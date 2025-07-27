@@ -1,13 +1,11 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
-
-// 导入 Naive UI 推荐的字体
-import 'vfonts/Lato.css'
-import 'vfonts/FiraCode.css'
+import i18n from './utils/i18n'
 
 const app = createApp(App)
 const pinia = createPinia()
 
 app.use(pinia)
+app.use(i18n)
 app.mount('#app')

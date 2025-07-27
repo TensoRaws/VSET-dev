@@ -1,5 +1,5 @@
-import { join } from 'node:path'
 import { stat } from 'node:fs/promises'
+import { join } from 'node:path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell, session } from 'electron'
 import { killAllProcesses } from './childProcessManager'

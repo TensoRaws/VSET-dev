@@ -5,6 +5,9 @@ import { CloudUploadOutline, CloseOutline, VideocamOutline } from '@vicons/ionic
 import useInputconfigStore from '@renderer/store/InputStore'
 import { storeToRefs } from 'pinia'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const inputStore = useInputconfigStore()
 const themeStore = useThemeStore()
@@ -47,7 +50,7 @@ const handleFileSelect = async () => {
       fileList.value = selectedFiles
     }
   } catch (error) {
-    console.error('选择文件失败:', error)
+    console.error(t('video.selectFileError'), error)
   }
 }
 
@@ -77,7 +80,7 @@ const formatFileSize = (bytes: number) => {
           <n-icon size="20" :color="themeStore.isDark ? '#60a5fa' : '#3b82f6'">
             <VideocamOutline />
           </n-icon>
-          <n-text class="text-lg font-semibold">源文件预览</n-text>
+          <n-text class="text-lg font-semibold">{{ t('video.sourceFilePreview') }}</n-text>
         </div>
         <n-button 
           @click="removeVideo"
@@ -116,17 +119,17 @@ const formatFileSize = (bytes: number) => {
       >
         <n-space vertical size="small">
           <div class="flex justify-between items-center">
-            <n-text depth="3" class="text-sm">文件名:</n-text>
+            <n-text depth="3" class="text-sm">{{ t('video.fileName') }}:</n-text>
             <n-text class="text-sm font-medium truncate max-w-xs" :title="currentVideo?.name">
               {{ currentVideo?.name }}
             </n-text>
           </div>
           <div class="flex justify-between items-center">
-            <n-text depth="3" class="text-sm">大小:</n-text>
+            <n-text depth="3" class="text-sm">{{ t('video.size') }}:</n-text>
             <n-text class="text-sm">{{ formatFileSize(currentVideo?.size || 0) }}</n-text>
           </div>
           <div class="flex justify-between items-center">
-            <n-text depth="3" class="text-sm">类型:</n-text>
+            <n-text depth="3" class="text-sm">{{ t('video.type') }}:</n-text>
             <n-text class="text-sm">{{ currentVideo?.type }}</n-text>
           </div>
         </n-space>
@@ -157,12 +160,12 @@ const formatFileSize = (bytes: number) => {
           </n-icon>
           
           <div class="space-y-2" @click.stop="handleFileSelect">
-            <n-text class="text-xl font-semibold">上传视频文件</n-text>
+            <n-text class="text-xl font-semibold">{{ t('video.uploadVideoFile') }}</n-text>
             <n-text depth="3" class="block">
-              拖拽视频文件到此处，或点击选择文件
+              {{ t('video.dragOrClick') }}
             </n-text>
             <n-text depth="3" class="text-sm block">
-              支持格式: MP4, AVI, MOV, MKV, WMV
+              {{ t('video.supportedFormats') }}
             </n-text>
           </div>
         </n-space>

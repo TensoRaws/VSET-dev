@@ -5,6 +5,9 @@ import { storeToRefs } from 'pinia'
 import { computed, h } from 'vue'
 import { NCard, NSelect, NRadioGroup, NRadio, NSlider, NInputNumber, NButton, NInput, NSpace, NFormItem, NGrid, NGridItem } from 'naive-ui'
 import { FolderOpenOutline } from '@vicons/ionicons5'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const OutputConfigStore = useOutputconfigStore()
 const themeStore = useThemeStore()
@@ -62,7 +65,7 @@ async function selectDirectory() {
       outputfolder.value = selectedPath
     }
   } catch (error) {
-    console.error('选择目录失败:', error)
+    console.error(t('output.selectDirectoryError'), error)
   }
 }
 </script>
@@ -72,13 +75,13 @@ async function selectDirectory() {
     <NSpace vertical :size="16" class="p-4">
       <!-- 编码设置 -->
       <NCard 
-        title="编码设置" 
+        :title="t('output.encodingSettings')" 
         :bordered="false"
         class="shadow-sm"
         :class="isDark ? 'bg-gray-800' : 'bg-white'"
       >
         <NSpace vertical :size="16">
-          <NFormItem label="编码器/格式" label-placement="left">
+          <NFormItem :label="t('output.encoderFormat')" label-placement="left">
             <NSelect 
               v-model:value="encoderValue" 
               :options="encoder_options"
@@ -87,7 +90,7 @@ async function selectDirectory() {
             />
           </NFormItem>
 
-          <NFormItem label="质量预设" label-placement="left">
+          <NFormItem :label="t('output.qualityPreset')" label-placement="left">
             <NSelect 
               v-model:value="qualityValue" 
               :options="qualityPresets"
@@ -95,16 +98,16 @@ async function selectDirectory() {
             />
           </NFormItem>
 
-          <NFormItem label="质量控制" label-placement="left">
+          <NFormItem :label="t('output.qualityControl')" label-placement="left">
             <NRadioGroup v-model:value="isUseCrf">
               <NSpace>
-                <NRadio :value="false">码率</NRadio>
+                <NRadio :value="false">{{ t('output.bitrate') }}</NRadio>
                 <NRadio :value="true">CRF</NRadio>
               </NSpace>
             </NRadioGroup>
           </NFormItem>
 
-          <NFormItem v-if="!isUseCrf" label="码率 (M)" label-placement="left">
+          <NFormItem v-if="!isUseCrf" :label="t('output.bitrateM')" label-placement="left">
             <div class="flex items-center gap-3 min-w-52">
               <NSlider 
                 v-model:value="bitValue" 
@@ -140,7 +143,7 @@ async function selectDirectory() {
             </div>
           </NFormItem>
 
-          <NFormItem label="视频容器" label-placement="left">
+          <NFormItem :label="t('output.videoContainer')" label-placement="left">
             <NSelect 
               v-model:value="videoContainer" 
               :options="VideoContainer_options"
@@ -152,22 +155,22 @@ async function selectDirectory() {
 
       <!-- 音频设置 -->
       <NCard 
-        title="音频设置" 
+        :title="t('output.audioSettings')" 
         :bordered="false"
         class="shadow-sm"
         :class="isDark ? 'bg-gray-800' : 'bg-white'"
       >
         <NSpace vertical :size="16">
-          <NFormItem label="音频处理" label-placement="left">
+          <NFormItem :label="t('output.audioProcessing')" label-placement="left">
             <NRadioGroup v-model:value="isSaveAudio">
               <NSpace>
-                <NRadio :value="true">保留</NRadio>
-                <NRadio :value="false">二压</NRadio>
+                <NRadio :value="true">{{ t('output.keep') }}</NRadio>
+                <NRadio :value="false">{{ t('output.recompress') }}</NRadio>
               </NSpace>
             </NRadioGroup>
           </NFormItem>
 
-          <NFormItem v-if="!isSaveAudio" label="音频格式" label-placement="left">
+          <NFormItem v-if="!isSaveAudio" :label="t('output.audioFormat')" label-placement="left">
             <NSelect 
               v-model:value="AudioContainer" 
               :options="AudioContainer_options"
@@ -179,16 +182,16 @@ async function selectDirectory() {
 
       <!-- 输出设置 -->
       <NCard 
-        title="输出设置" 
+        :title="t('output.outputSettings')" 
         :bordered="false"
         class="shadow-sm"
         :class="isDark ? 'bg-gray-800' : 'bg-white'"
       >
-        <NFormItem label="输出文件夹" label-placement="top">
+        <NFormItem :label="t('output.outputFolder')" label-placement="top">
           <div class="flex gap-2 w-full">
             <NInput 
               v-model:value="outputfolder" 
-              placeholder="请设置输出文件夹"
+              :placeholder="t('output.setOutputFolder')"
               readonly
               class="flex-1"
             />
@@ -197,7 +200,7 @@ async function selectDirectory() {
               @click="selectDirectory"
               :render-icon="() => h(FolderOpenOutline)"
             >
-              选择
+              {{ t('output.select') }}
             </NButton>
           </div>
         </NFormItem>

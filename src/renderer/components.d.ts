@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppSettings: typeof import('./src/components/AppSettings.vue')['default']
     EnhancePage: typeof import('./src/components/EnhancePage.vue')['default']
     EnhanceSettings: typeof import('./src/components/EnhanceSettings.vue')['default']
     FilterPage: typeof import('./src/components/FilterPage.vue')['default']
@@ -16,6 +17,11 @@ declare module 'vue' {
     InputPage: typeof import('./src/components/InputPage.vue')['default']
     LeftTabBar: typeof import('./src/components/LeftTabBar.vue')['default']
     LogPanel: typeof import('./src/components/LogPanel.vue')['default']
+    NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NDialogProvider: typeof import('naive-ui')['NDialogProvider']
+    NIcon: typeof import('naive-ui')['NIcon']
+    NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NSelect: typeof import('naive-ui')['NSelect']
     OutputPage: typeof import('./src/components/OutputPage.vue')['default']
     OutputSettings: typeof import('./src/components/OutputSettings.vue')['default']

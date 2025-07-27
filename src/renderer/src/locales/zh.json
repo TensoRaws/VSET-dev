@@ -1,0 +1,103 @@
+{
+  "app": {
+    "title": "VSET 4.2.0",
+    "settings": "设置"
+  },
+  "window": {
+    "minimize": "最小化",
+    "maximize": "最大化",
+    "closeWindow": "关闭"
+  },
+  "log": {
+    "output": "日志输出",
+    "expand": "展开",
+    "collapse": "收起",
+    "logCount": "{count} 条日志",
+    "autoScroll": "自动滚动",
+    "copyLogs": "复制日志",
+    "clearLogs": "清空日志",
+    "copySuccess": "日志已复制到剪贴板",
+    "copyFailed": "复制失败",
+    "noLogs": "暂无日志输出"
+  },
+  "settings": {
+    "language": "语言",
+    "theme": "主题",
+    "lightThemeDesc": "亮色主题",
+    "darkThemeDesc": "暗色主题",
+    "enhance": "增强设置",
+    "filter": "滤镜设置",
+    "output": "输出设置",
+    "chinese": "中文",
+    "english": "English"
+  },
+  "video": {
+    "sourceFilePreview": "源文件预览",
+    "fileName": "文件名",
+    "size": "大小",
+    "type": "类型",
+    "uploadVideoFile": "上传视频文件",
+    "dragOrClick": "拖拽视频文件到此处，或点击选择文件",
+    "supportedFormats": "支持格式: MP4, AVI, MOV, MKV, WMV",
+    "selectFileError": "选择文件失败:"
+  },
+  "enhance": {
+    "srSettings": "超分设置",
+    "vfiSettings": "补帧设置",
+    "srConfig": "超分配置",
+    "enableSR": "启用超分",
+    "halfPrecision": "半精度",
+    "algorithmSelection": "算法选择",
+    "srAlgorithm": "超分算法",
+    "realcuganParams": "Real_cugan 参数",
+    "realesrganParams": "Real_esrgan 参数",
+    "waifu2xParams": "Waifu2x 参数",
+    "swinirParams": "SwinIR 参数",
+    "inferenceMethod": "推理方式",
+    "srModel": "超分模型",
+    "tileCount": "切割块数量",
+    "intensityParam": "强度参数",
+    "scaleMultiplier": "放大倍数",
+    "vfiConfig": "补帧配置",
+    "enableVfi": "启用补帧",
+    "vfiAlgorithm": "补帧算法",
+    "rifeParams": "RIFE 参数",
+    "vfiModel": "补帧模型",
+    "opticalFlowScale": "光流尺度",
+    "targetFramerate": "目标帧率",
+    "sceneChangeThreshold": "转场阈值",
+    "enable": "启用",
+    "disable": "关闭"
+  },
+  "filter": {
+    "preprocessing": "预处理（AI渲染前工作）",
+    "postprocessing": "后处理（AI渲染后工作）",
+    "videoResize": "视频长宽缩放",
+    "width": "宽度",
+    "height": "高度",
+    "blackBorderProcessing": "视频黑边处理",
+    "left": "左侧",
+    "right": "右侧",
+    "top": "上边",
+    "bottom": "下边"
+  },
+  "output": {
+    "encodingSettings": "编码设置",
+    "encoderFormat": "编码器/格式",
+    "qualityPreset": "质量预设",
+    "qualityControl": "质量控制",
+    "bitrate": "码率",
+    "bitrateM": "码率 (M)",
+    "videoContainer": "视频容器",
+    "audioSettings": "音频设置",
+    "audioProcessing": "音频处理",
+    "keep": "保留",
+    "recompress": "二压",
+    "audioFormat": "音频格式",
+    "outputSettings": "输出设置",
+    "outputFolder": "输出文件夹",
+    "setOutputFolder": "请设置输出文件夹",
+    "select": "选择",
+    "selectDirectoryError": "选择目录失败:"
+  }
+}

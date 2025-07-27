@@ -1,8 +1,14 @@
+import { darkTheme, lightTheme, type GlobalTheme } from 'naive-ui'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { darkTheme, lightTheme, type GlobalTheme } from 'naive-ui'
 
-export const useThemeStore = defineStore('theme', () => {
+export const useThemeStore = defineStore('theme', (): {
+  isDark: Ref<boolean>
+  theme: Ref<GlobalTheme | null>
+  toggleTheme: () => void
+  setDarkTheme: () => void
+  setLightTheme: () => void
+} => {
   const isDark = ref(true) // 默认暗色主题
   const theme = ref<GlobalTheme | null>(darkTheme)
 

@@ -2,6 +2,7 @@
 import useSrsettingconfigStore from '@renderer/store/SrSettingsStore'
 import useVfisettingconfigStore from '@renderer/store/VfiSettingsStore'
 import { useThemeStore } from '@renderer/store/ThemeStore'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { 
@@ -41,6 +42,7 @@ import {
 const SrSettingStore = useSrsettingconfigStore()
 const VfiSettingStore = useVfisettingconfigStore()
 const themeStore = useThemeStore()
+const { t } = useI18n()
 
 const { isDark } = storeToRefs(themeStore)
 
@@ -88,18 +90,18 @@ function changeSelect(value: string) {
     isDark ? 'bg-gray-900' : 'bg-gray-50'
   ]">
     <NTabs type="segment" animated>
-      <NTabPane name="sr" tab="超分设置">
+      <NTabPane name="sr" :tab="t('enhance.srSettings')">
         <div class="space-y-4">
           <!-- 超分配置 -->
-          <NCard title="超分配置" size="small">
+          <NCard :title="t('enhance.srConfig')" size="small">
             <NGrid cols="2" x-gap="16" y-gap="12">
               <NGridItem>
-                <NFormItem label="启用超分">
+                <NFormItem :label="t('enhance.enableSR')">
                   <NSwitch v-model:value="useSR" />
                 </NFormItem>
               </NGridItem>
               <NGridItem>
-                <NFormItem label="半精度">
+                <NFormItem :label="t('enhance.halfPrecision')">
                   <NSwitch :value="true" disabled />
                 </NFormItem>
               </NGridItem>
@@ -107,8 +109,8 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- 算法选择 -->
-          <NCard title="算法选择" size="small">
-            <NFormItem label="超分算法">
+          <NCard :title="t('enhance.algorithmSelection')" size="small">
+            <NFormItem :label="t('enhance.srAlgorithm')">
               <NSelect 
                 v-model:value="SRMethodValue" 
                 :options="SRMethod_options"
@@ -119,9 +121,9 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- Real_cugan 设置 -->
-          <NCard v-if="SRMethodValue === 'Real_cugan'" title="Real_cugan 参数" size="small">
+          <NCard v-if="SRMethodValue === 'Real_cugan'" :title="t('enhance.realcuganParams')" size="small">
             <NSpace vertical size="large">
-              <NFormItem label="推理方式">
+              <NFormItem :label="t('enhance.inferenceMethod')">
                 <NSelect 
                   v-model:value="RealcuganInferenceValue" 
                   :options="Inference_options"
@@ -129,7 +131,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="超分模型">
+              <NFormItem :label="t('enhance.srModel')">
                 <NSelect 
                   v-model:value="RealcuganModelValue" 
                   :options="RealcuganModel_options"
@@ -137,7 +139,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="切割块数量">
+              <NFormItem :label="t('enhance.tileCount')">
                 <NSelect 
                   v-model:value="RealcuganTileValue" 
                   :options="VsmlrtTile_options"
@@ -145,7 +147,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="强度参数">
+              <NFormItem :label="t('enhance.intensityParam')">
                 <NSpace align="center" class="w-full">
                   <NSlider 
                     v-model:value="RealcuganAlphaValue" 
@@ -168,9 +170,9 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- Real_esrgan 设置 -->
-          <NCard v-if="SRMethodValue === 'Real_esrgan'" title="Real_esrgan 参数" size="small">
+          <NCard v-if="SRMethodValue === 'Real_esrgan'" :title="t('enhance.realesrganParams')" size="small">
             <NSpace vertical size="large">
-              <NFormItem label="推理方式">
+              <NFormItem :label="t('enhance.inferenceMethod')">
                 <NSelect 
                   v-model:value="RealesrganInferenceValue" 
                   :options="Inference_options"
@@ -178,7 +180,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="超分模型">
+              <NFormItem :label="t('enhance.srModel')">
                 <NSelect 
                   v-model:value="RealesrganModelValue" 
                   :options="RealesrganModel_options"
@@ -186,7 +188,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="放大倍数">
+              <NFormItem :label="t('enhance.scaleMultiplier')">
                 <NSelect 
                   v-model:value="RealesrganScaleValue" 
                   :options="RealesrganScale_options"
@@ -194,7 +196,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="切割块数量">
+              <NFormItem :label="t('enhance.tileCount')">
                 <NSelect 
                   v-model:value="RealesrganTileValue" 
                   :options="VsmlrtTile_options"
@@ -205,9 +207,9 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- Waifu2x 设置 -->
-          <NCard v-if="SRMethodValue === 'Waifu2x'" title="Waifu2x 参数" size="small">
+          <NCard v-if="SRMethodValue === 'Waifu2x'" :title="t('enhance.waifu2xParams')" size="small">
             <NSpace vertical size="large">
-              <NFormItem label="推理方式">
+              <NFormItem :label="t('enhance.inferenceMethod')">
                 <NSelect 
                   v-model:value="Waifu2xInferenceValue" 
                   :options="Inference_options"
@@ -215,7 +217,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="超分模型">
+              <NFormItem :label="t('enhance.srModel')">
                 <NSelect 
                   v-model:value="Waifu2xModelValue" 
                   :options="Waifu2xModel_options"
@@ -223,7 +225,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="切割块数量">
+              <NFormItem :label="t('enhance.tileCount')">
                 <NSelect 
                   v-model:value="Waifu2xTileValue" 
                   :options="VsmlrtTile_options"
@@ -234,9 +236,9 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- SwinIR 设置 -->
-          <NCard v-if="SRMethodValue === 'SwinIR'" title="SwinIR 参数" size="small">
+          <NCard v-if="SRMethodValue === 'SwinIR'" :title="t('enhance.swinirParams')" size="small">
             <NSpace vertical size="large">
-              <NFormItem label="推理方式">
+              <NFormItem :label="t('enhance.inferenceMethod')">
                 <NSelect 
                   v-model:value="SwinIRInferenceValue" 
                   :options="Inference_options"
@@ -244,7 +246,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="超分模型">
+              <NFormItem :label="t('enhance.srModel')">
                 <NSelect 
                   v-model:value="SwinIRModelValue" 
                   :options="SwinIRModel_options"
@@ -252,7 +254,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="切割块数量">
+              <NFormItem :label="t('enhance.tileCount')">
                 <NSelect 
                   v-model:value="SwinIRTileValue" 
                   :options="VsmlrtTile_options"
@@ -264,18 +266,18 @@ function changeSelect(value: string) {
         </div>
       </NTabPane>
 
-      <NTabPane name="vfi" tab="补帧设置">
+      <NTabPane name="vfi" :tab="t('enhance.vfiSettings')">
         <div class="space-y-4">
           <!-- 补帧配置 -->
-          <NCard title="补帧配置" size="small">
+          <NCard :title="t('enhance.vfiConfig')" size="small">
             <NGrid cols="2" x-gap="16" y-gap="12">
               <NGridItem>
-                <NFormItem label="启用补帧">
+                <NFormItem :label="t('enhance.enableVfi')">
                   <NSwitch v-model:value="useVfi" />
                 </NFormItem>
               </NGridItem>
               <NGridItem>
-                <NFormItem label="半精度">
+                <NFormItem :label="t('enhance.halfPrecision')">
                   <NSwitch :value="true" disabled />
                 </NFormItem>
               </NGridItem>
@@ -283,8 +285,8 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- 算法选择 -->
-          <NCard title="算法选择" size="small">
-            <NFormItem label="补帧算法">
+          <NCard :title="t('enhance.algorithmSelection')" size="small">
+            <NFormItem :label="t('enhance.vfiAlgorithm')">
               <NSelect 
                 v-model:value="VfiMethodValue" 
                 :options="VfiMethod_options"
@@ -294,9 +296,9 @@ function changeSelect(value: string) {
           </NCard>
 
           <!-- Rife 设置 -->
-          <NCard v-if="VfiMethodValue === 'Rife'" title="Rife 参数" size="small">
+          <NCard v-if="VfiMethodValue === 'Rife'" :title="t('enhance.rifeParams')" size="small">
             <NSpace vertical size="large">
-              <NFormItem label="推理方式">
+              <NFormItem :label="t('enhance.inferenceMethod')">
                 <NSelect 
                   v-model:value="RifeInferenceValue" 
                   :options="Inference_Vfi_options"
@@ -304,7 +306,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="补帧模型">
+              <NFormItem :label="t('enhance.vfiModel')">
                 <NSelect 
                   v-model:value="RifeModelValue" 
                   :options="RifeModel_options"
@@ -312,7 +314,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="光流尺度">
+              <NFormItem :label="t('enhance.opticalFlowScale')">
                 <NSelect 
                   v-model:value="RifeScaleValue" 
                   :options="Scale_Vfi_options"
@@ -320,7 +322,7 @@ function changeSelect(value: string) {
                 />
               </NFormItem>
 
-              <NFormItem label="目标帧率">
+              <NFormItem :label="t('enhance.targetFramerate')">
                 <NSpace align="center" class="w-full">
                   <NSlider 
                     v-model:value="RifeMultiValue" 
@@ -338,7 +340,7 @@ function changeSelect(value: string) {
                 </NSpace>
               </NFormItem>
 
-              <NFormItem label="转场阈值">
+              <NFormItem :label="t('enhance.sceneChangeThreshold')">
                 <NSpace align="center" class="w-full">
                   <NSlider 
                     v-model:value="RifeDetectionValue" 
@@ -361,8 +363,8 @@ function changeSelect(value: string) {
               <NFormItem label="Ensemble">
                 <NRadioGroup v-model:value="RifeEnsembleValue">
                   <NSpace>
-                    <NRadio :value="true">使用</NRadio>
-                    <NRadio :value="false">关闭</NRadio>
+                    <NRadio :value="true">{{ t('enhance.enable') }}</NRadio>
+                    <NRadio :value="false">{{ t('enhance.disable') }}</NRadio>
                   </NSpace>
                 </NRadioGroup>
               </NFormItem>

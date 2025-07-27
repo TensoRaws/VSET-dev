@@ -23,29 +23,29 @@ export function removeProcess(proc: ChildProcess) {
 }
 
 /**
- * 杀死所有子进程及其子进程树
+ * Kill all child processes and their process trees
  */
 export function killAllProcesses() {
-  console.log(`🧹 正在终止 ${childProcesses.length} 个子进程...`)
+  console.log(`🧹 Terminating ${childProcesses.length} child processes...`)
 
   for (const proc of childProcesses) {
     if (!proc.killed) {
       const pid = proc.pid
       if (typeof pid === 'number') {
-        console.log(`🔪 尝试终止进程树 PID=${pid}`)
+        console.log(`🔪 Attempting to terminate process tree PID=${pid}`)
         kill(pid, 'SIGKILL', (err) => {
           if (err) {
-            console.error(`❌ 无法终止 PID=${pid}:`, err)
+            console.error(`❌ Unable to terminate PID=${pid}:`, err)
           } else {
-            console.log(`✅ 成功终止 PID=${pid}`)
+            console.log(`✅ Successfully terminated PID=${pid}`)
           }
         })
       } else {
-        console.warn(`⚠ 无法终止进程：找不到有效 PID`)
+        console.warn(`⚠ Unable to terminate process: no valid PID found`)
       }
     }
   }
 
-  // 清空列表
+  // Clear the list
   childProcesses.length = 0
 }
