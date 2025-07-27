@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppSettings: typeof import('./src/components/AppSettings.vue')['default']
+    CropVisualizer: typeof import('./src/components/CropVisualizer.vue')['default']
     EnhancePage: typeof import('./src/components/EnhancePage.vue')['default']
     EnhanceSettings: typeof import('./src/components/EnhanceSettings.vue')['default']
     FilterPage: typeof import('./src/components/FilterPage.vue')['default']
@@ -20,7 +21,11 @@ declare module 'vue' {
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NDivider: typeof import('naive-ui')['NDivider']
+    NFormItem: typeof import('naive-ui')['NFormItem']
+    NGrid: typeof import('naive-ui')['NGrid']
+    NGridItem: typeof import('naive-ui')['NGridItem']
     NIcon: typeof import('naive-ui')['NIcon']
+    NInputNumber: typeof import('naive-ui')['NInputNumber']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NSelect: typeof import('naive-ui')['NSelect']

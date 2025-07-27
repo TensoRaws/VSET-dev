@@ -21,6 +21,7 @@
     "build:win": "pnpm run build && electron-builder --win --dir"
   },
   "dependencies": {
+    "@vueuse/core": "^13.5.0",
     "electron-updater": "^6.6.7",
     "iconv-lite": "^0.6.3",
     "naive-ui": "^2.42.0",

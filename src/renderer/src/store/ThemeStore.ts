@@ -1,6 +1,5 @@
 import { darkTheme, lightTheme, type GlobalTheme } from 'naive-ui'
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { useColorMode, useCycleList, type BasicColorSchema } from '@vueuse/core'
 
 export const useThemeStore = defineStore('theme', (): {
   isDark: Ref<boolean>
