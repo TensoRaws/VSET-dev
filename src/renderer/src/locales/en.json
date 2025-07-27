@@ -121,5 +121,13 @@
     "setOutputFolder": "Please set output folder",
     "select": "Select",
     "selectDirectoryError": "Failed to select directory:"
+  },
+  "process": {
+    "start": "Start Processing",
+    "stop": "Stop Processing",
+    "ready": "Ready",
+    "processing": "Processing",
+    "completed": "Completed",
+    "paused": "Paused"
   }
 }

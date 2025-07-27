@@ -21,11 +21,13 @@ declare module 'vue' {
     NSpace: typeof import('naive-ui')['NSpace']
     NText: typeof import('naive-ui')['NText']
     OutputSettings: typeof import('./src/components/OutputSettings.vue')['default']
+    ProcessControl: typeof import('./src/components/ProcessControl.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsModal: typeof import('./src/components/SettingsModal.vue')['default']
     SettingsPanel: typeof import('./src/components/SettingsPanel.vue')['default']
     ThemeSettings: typeof import('./src/components/ThemeSettings.vue')['default']
+    TitleBar: typeof import('./src/components/TitleBar.vue')['default']
     VideoPreview: typeof import('./src/components/VideoPreview.vue')['default']
     WindowControls: typeof import('./src/components/WindowControls.vue')['default']
   }

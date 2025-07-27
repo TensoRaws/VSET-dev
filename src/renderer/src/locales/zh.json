@@ -121,5 +121,13 @@
     "setOutputFolder": "请设置输出文件夹",
     "select": "选择",
     "selectDirectoryError": "选择目录失败:"
+  },
+  "process": {
+    "start": "开始处理",
+    "stop": "停止处理",
+    "ready": "准备就绪",
+    "processing": "处理中",
+    "completed": "处理完成",
+    "paused": "已暂停"
   }
 }
