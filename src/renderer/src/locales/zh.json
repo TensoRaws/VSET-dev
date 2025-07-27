@@ -29,7 +29,29 @@
     "filter": "滤镜设置",
     "output": "输出设置",
     "chinese": "中文",
-    "english": "English"
+    "english": "English",
+    "themeMode": "主题模式",
+    "lightMode": "浅色模式",
+    "darkMode": "深色模式",
+    "autoMode": "自动模式",
+    "autoModeDesc": "跟随系统主题设置",
+    "primaryColor": "主题色",
+    "presetColors": "预设颜色",
+    "customColor": "自定义颜色",
+    "colors": {
+      "blue": "蓝色",
+      "green": "绿色",
+      "red": "红色",
+      "orange": "橙色",
+      "purple": "紫色",
+      "cyan": "青色",
+      "pink": "粉色",
+      "yellow": "黄色"
+    }
+  },
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消"
   },
   "video": {
     "sourceFilePreview": "源文件预览",

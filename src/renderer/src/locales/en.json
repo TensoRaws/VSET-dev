@@ -29,7 +29,29 @@
     "filter": "Filter Settings",
     "output": "Output Settings",
     "chinese": "Chinese",
-    "english": "English"
+    "english": "English",
+    "themeMode": "Theme Mode",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "autoMode": "Auto Mode",
+    "autoModeDesc": "Follow system theme settings",
+    "primaryColor": "Primary Color",
+    "presetColors": "Preset Colors",
+    "customColor": "Custom Color",
+    "colors": {
+      "blue": "Blue",
+      "green": "Green",
+      "red": "Red",
+      "orange": "Orange",
+      "purple": "Purple",
+      "cyan": "Cyan",
+      "pink": "Pink",
+      "yellow": "Yellow"
+    }
+  },
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "video": {
     "sourceFilePreview": "Source File Preview",

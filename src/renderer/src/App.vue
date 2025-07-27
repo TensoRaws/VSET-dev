@@ -3,12 +3,7 @@ import {
   NConfigProvider,
   NMessageProvider,
   NDialogProvider,
-  NNotificationProvider,
-  NModal,
-  NSelect,
-  NSwitch,
-  NSpace,
-  NDivider
+  NNotificationProvider
 } from 'naive-ui'
 import {SettingsOutline} from '@vicons/ionicons5'
 import {useThemeStore} from './store/ThemeStore'
@@ -16,24 +11,19 @@ import {useAppI18n} from './composables/useAppI18n'
 import VideoPreview from './components/VideoPreview.vue'
 import SettingsPanel from './components/SettingsPanel.vue'
 import LogPanel from './components/LogPanel.vue'
+import SettingsModal from './components/SettingsModal.vue'
 
 // 主题状态
 const themeStore = useThemeStore()
 
 // 国际化
-const {locale, naiveLocale, naiveDateLocale, t, setLanguage} = useAppI18n()
+const {naiveLocale, naiveDateLocale, t} = useAppI18n()
 
 // 日志面板状态
 const logCollapsed = ref(false)
 
 // 设置弹窗状态
 const showSettingsModal = ref(false)
-
-// 语言选项
-const languageOptions = computed(() => [
-  {label: t('settings.chinese'), value: 'zh'},
-  {label: t('settings.english'), value: 'en'}
-])
 
 // 切换日志面板
 const toggleLog = () => {
@@ -52,11 +42,6 @@ const maximizeWindow = () => {
 const closeWindow = () => {
   window.electronAPI?.closeWindow()
 }
-
-// 语言切换
-const handleLanguageChange = (value: string) => {
-  setLanguage(value as 'zh' | 'en')
-}
 </script>
 
 <template>
@@ -64,11 +49,7 @@ const handleLanguageChange = (value: string) => {
       :theme="themeStore.theme"
       :locale="naiveLocale"
       :date-locale="naiveDateLocale"
-      :theme-overrides="{
-      common: {
-        fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
-      }
-    }"
+      :theme-overrides="themeStore.themeOverrides"
   >
     <n-message-provider>
       <n-dialog-provider>
@@ -150,10 +131,10 @@ const handleLanguageChange = (value: string) => {
             </div>
 
             <!-- 主内容区域 -->
-            <div class="flex flex-1 min-h-0">
+            <div class="flex flex-1 min-h-0 border-b" :class="[themeStore.isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200']">
               <!-- 左侧视频预览区域 -->
               <div :class="[
-                'flex-1 flex flex-col border-r',
+                'flex-1 flex flex-col',
                 themeStore.isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
               ]">
                 <VideoPreview/>
@@ -189,55 +170,12 @@ const handleLanguageChange = (value: string) => {
               </div>
             </div>
           </div>
+          
+          <!-- 设置弹窗组件 -->
+          <SettingsModal v-model:show="showSettingsModal" />
         </n-notification-provider>
       </n-dialog-provider>
     </n-message-provider>
-
-    <!-- 设置弹窗 -->
-    <n-modal
-        v-model:show="showSettingsModal"
-        preset="card"
-        :title="t('app.settings')"
-        style="width: 500px"
-        :bordered="false"
-        size="huge"
-        role="dialog"
-        aria-modal="true"
-    >
-      <n-space vertical size="large">
-        <!-- 语言设置 -->
-        <div>
-          <h4 :class="themeStore.isDark ? 'text-gray-200' : 'text-gray-800'" style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
-            {{ t('settings.language') }}
-          </h4>
-          <n-select
-              :value="locale"
-              :options="languageOptions"
-              @update:value="handleLanguageChange"
-              style="width: 100%"
-          />
-        </div>
-
-        <n-divider style="margin: 16px 0"/>
-
-        <!-- 主题设置 -->
-        <div>
-          <h4 :class="themeStore.isDark ? 'text-gray-200' : 'text-gray-800'" style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600;">
-            {{ t('settings.theme') }}
-          </h4>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span :class="themeStore.isDark ? 'text-gray-300' : 'text-gray-600'" style="font-size: 14px;">
-              {{ themeStore.isDark ? t('settings.darkThemeDesc') : t('settings.lightThemeDesc') }}
-            </span>
-            <n-switch
-                :value="themeStore.isDark"
-                @update:value="themeStore.toggleTheme"
-                size="medium"
-            />
-          </div>
-        </div>
-      </n-space>
-    </n-modal>
   </n-config-provider>
 </template>
 
