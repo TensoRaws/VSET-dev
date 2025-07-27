@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import { NTabs, NTabPane, NIcon } from 'naive-ui'
 import { RocketOutline, ColorPaletteOutline, CloudUploadOutline } from '@vicons/ionicons5'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useI18n } from 'vue-i18n'
 import EnhanceSettings from './EnhanceSettings.vue'
@@ -21,7 +20,6 @@ const emit = defineEmits<{
   'update:activeTab': [value: string]
 }>()
 
-const themeStore = useThemeStore()
 const { themeClasses } = useThemeClasses()
 const { t } = useI18n()
 const currentTab = ref(props.activeTab)

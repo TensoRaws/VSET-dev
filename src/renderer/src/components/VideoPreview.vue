@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NButton, NCard, NSpace, NText, NIcon, NUpload, NUploadDragger } from 'naive-ui'
+import { NButton, NCard, NSpace, NText, NIcon } from 'naive-ui'
 import { CloudUploadOutline, CloseOutline, VideocamOutline } from '@vicons/ionicons5'
 import useInputconfigStore from '@renderer/store/InputStore'
 import { storeToRefs } from 'pinia'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const inputStore = useInputconfigStore()
-const themeStore = useThemeStore()
 const { themeClasses, getIconColor, getIconColorMuted } = useThemeClasses()
 const { fileList } = storeToRefs(inputStore)
 

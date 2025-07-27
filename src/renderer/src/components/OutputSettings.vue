@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import useOutputconfigStore from '@renderer/store/OutputStote'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { storeToRefs } from 'pinia'
 import { computed, h } from 'vue'
-import { NCard, NSelect, NRadioGroup, NRadio, NSlider, NInputNumber, NButton, NInput, NSpace, NFormItem, NGrid, NGridItem } from 'naive-ui'
+import { NCard, NSelect, NRadioGroup, NRadio, NSlider, NInputNumber, NButton, NInput, NSpace, NFormItem } from 'naive-ui'
 import { FolderOpenOutline } from '@vicons/ionicons5'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const OutputConfigStore = useOutputconfigStore()
-const themeStore = useThemeStore()
-const { isDark } = storeToRefs(themeStore)
 const { themeClasses } = useThemeClasses()
 
 const {

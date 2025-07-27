@@ -37,7 +37,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import ThemeSettings from './ThemeSettings.vue'
 
@@ -57,7 +56,6 @@ const emit = defineEmits<Emits>()
 
 // Composables
 const { t, locale } = useI18n()
-const themeStore = useThemeStore()
 const { themeClasses } = useThemeClasses()
 
 // 计算属性

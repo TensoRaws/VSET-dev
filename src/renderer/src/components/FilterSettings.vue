@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useFilterconfigStore from '@renderer/store/FilterStore'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useAppI18n } from '@renderer/composables/useAppI18n'
 import { storeToRefs } from 'pinia'
@@ -19,9 +18,7 @@ import {
 } from 'naive-ui'
 
 const FilterConfigStore = useFilterconfigStore()
-const themeStore = useThemeStore()
 const { t } = useAppI18n()
-const { isDark } = storeToRefs(themeStore)
 const { themeClasses } = useThemeClasses()
 
 const {

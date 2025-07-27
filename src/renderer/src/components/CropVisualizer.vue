@@ -137,17 +137,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useThemeStore } from '@renderer/store/ThemeStore'
 import { useThemeClasses } from '@renderer/composables/useThemeClasses'
 import { useAppI18n } from '@renderer/composables/useAppI18n'
-import { storeToRefs } from 'pinia'
 import {
   NGrid,
   NGridItem,
   NFormItem,
-  NInputNumber,
-  NSpace
+  NInputNumber
 } from 'naive-ui'
 
 // 组件属性定义
@@ -184,12 +180,8 @@ const emit = defineEmits<{
 }>()
 
 // 组合式函数
-const themeStore = useThemeStore()
 const { t } = useAppI18n()
 const { themeClasses } = useThemeClasses()
-
-// 计算属性
-const isDark = computed(() => themeStore.isDark)
 
 // 方法
 const updateCropValue = (key: keyof CropValues, value: number | null) => {

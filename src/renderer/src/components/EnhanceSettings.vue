@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import useSrSettingConfigStore from '@renderer/store/SrSettingsStore'
 import useVfiSettingConfigStore from '@renderer/store/VfiSettingsStore'
-import {useThemeStore} from '@renderer/store/ThemeStore'
 import {useThemeClasses} from '@renderer/composables/useThemeClasses'
 import {useI18n} from 'vue-i18n'
 import {storeToRefs} from 'pinia'
@@ -16,8 +15,6 @@ import {
   NRadioGroup,
   NRadio,
   NSpace,
-  NGrid,
-  NGridItem,
   NFormItem
 } from 'naive-ui'
 
@@ -41,11 +38,8 @@ import {
 
 const SrSettingStore = useSrSettingConfigStore()
 const VfiSettingStore = useVfiSettingConfigStore()
-const themeStore = useThemeStore()
 const {themeClasses} = useThemeClasses()
 const {t} = useI18n()
-
-const {isDark} = storeToRefs(themeStore)
 
 const {
   useSR,
