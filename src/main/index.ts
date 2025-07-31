@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { RunCommand } from './RunCommand'
+import { RunCommand,preview ,preview_frame} from './RunCommand'
 import { killAllProcesses } from './childProcessManager'
 import ipc from './ipc'
 
@@ -20,7 +20,7 @@ function createWindow(): BrowserWindow {
     show: false,
     autoHideMenuBar: true,
     icon: path.join(__dirname, '../../resources/icon.png'),
-    title: 'VSET 4.1.4',
+    title: 'VSET 4.2.0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -87,6 +87,9 @@ app.whenReady().then(() => {
   })
 
   ipcMain.on('execute-command', RunCommand)
+  
+  ipcMain.on('preview', preview)
+  ipcMain.on('preview_frame', preview_frame)
 
   ipcMain.on('stop-all-processes', () => {
     killAllProcesses()

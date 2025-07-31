@@ -8,7 +8,7 @@ import iconv from 'iconv-lite';
 const fs = require('fs');
 const exec = promisify(execCallback);
 
-function generate_cmd(config_json,vipipePath,vpyPath,ffmpegPath,video,hasAudio){
+function generate_cmd(config_json,vipipePath,vpyPath,ffmpegPath,video,hasAudio,hasSubtitle){
   let cmd = '"' + vipipePath + '"' + ' "-c" "y4m" "' + vpyPath + '" "-" | "' +
     ffmpegPath + '" "-hide_banner" "-y" "-i" "pipe:" "-i" "' + video + '"' +
     ' "-map" "0:v:0" ';
@@ -17,6 +17,10 @@ function generate_cmd(config_json,vipipePath,vpyPath,ffmpegPath,video,hasAudio){
   }
 
   cmd += '"-c:v" "' + config_json.encoderValue + '" ';
+
+  if(hasSubtitle){
+     cmd += '"-map" "1:s" "-c:s" "copy" ';
+  }
 
   if(config_json.encoderValue=='libx265'){
   cmd +='"-pix_fmt" "yuv420p10le" "-profile:v" "main10" "-vtag" "hvc1" '
@@ -399,6 +403,124 @@ export function requestStop() {
   shouldStop = true
 }
 
+export async function preview(event, config_json): Promise<void> {
+    // 工具路径
+  const exeDir = path.dirname(process.execPath);
+  const vipipePath = path.join(exeDir, "package", "VSPipe.exe");
+  const videos = config_json.fileList;
+  if (videos?.length == 0) {
+    event.sender.send('ffmpeg-finish')
+      return
+    } 
+  const video=videos[0]
+
+  const baseName = path.basename(video, path.extname(video));
+  const vpyPath = path.join(exeDir, "vpyFiles", `${baseName}.vpy`);
+
+  // ========== 生成 vpy 文件 ==========
+  const vpyFile = generate_vpy(config_json, video);
+  fs.writeFileSync(vpyPath, vpyFile);
+
+
+  let info: {
+        width: string;
+        height: string;
+        frames: string;
+        fps: string;
+      } = {
+        width: '未知',
+        height: '未知',
+        frames: '0',
+        fps: '0',
+      };
+      await new Promise<void>((resolve, reject) => {
+      const vspipeInfoProcess = spawn(vipipePath, ['--info', vpyPath]);
+      addProcess(vspipeInfoProcess);
+
+      let vspipeOut = ''; // 用于保存 stdout 内容
+      let stderrOut = ''; // 用于保存 stderr 内容
+
+      vspipeInfoProcess.stdout.on('data', (data: Buffer) => {
+        const str = iconv.decode(data, 'gbk');;
+        vspipeOut += str;
+        event.sender.send('ffmpeg-output', `${str}`);
+      });
+
+      vspipeInfoProcess.stderr.on('data', (data: Buffer) => {
+        const str = iconv.decode(data, 'gbk');;
+        stderrOut += str;
+        event.sender.send('ffmpeg-output', `${str}`);
+      });
+
+      vspipeInfoProcess.on('close', (code) => {
+        removeProcess(vspipeInfoProcess);
+        event.sender.send('ffmpeg-output', `vspipe info 执行完毕，退出码: ${code}\n`);///////
+         info = {
+          width: vspipeOut.match(/Width:\s*(\d+)/)?.[1] || '未知',
+          height: vspipeOut.match(/Height:\s*(\d+)/)?.[1] || '未知',
+          frames: vspipeOut.match(/Frames:\s*(\d+)/)?.[1] || '0',
+          fps: vspipeOut.match(/FPS:\s*([\d\/]+)\s*\(([\d.]+) fps\)/)?.[2] || '0',
+        };
+
+        event.sender.send('preview-info', {
+          width: info.width,
+          height: info.height,
+          frames: info.frames,
+          fps: info.fps
+        });
+        resolve();
+      });
+
+      vspipeInfoProcess.on('error', (err) => {
+        event.sender.send('ffmpeg-output', `vspipe 执行出错: ${err.message}\n`);
+        reject(err);
+      });
+    });
+    event.sender.send('preview-vpyPath',vpyPath)
+    event.sender.send('ffmpeg-finish')
+}
+//D:\code\压缩包\VSET\package\VSPipe.exe -c y4m --start 5 --end 5 D:\code\压缩包\VSET\vpyfiles\output.vpy - 
+// | D:\code\压缩包\VSET\package\ffmpeg.exe -y -f yuv4mpegpipe -i - -frames:v 1 output.png
+
+export async function preview_frame(event: any, vpyfile: string, currentFrame: number): Promise<void> {
+  const vspipePath = 'D:/code/压缩包/VSET/package/vspipe.exe';
+  const ffmpegPath = 'D:/code/压缩包/VSET/package/ffmpeg.exe';
+
+  // 构造一行命令
+  const cmd = `"${vspipePath}" -c y4m --start ${currentFrame} --end ${currentFrame} "${vpyfile}" - | "${ffmpegPath}" -y -f yuv4mpegpipe -i - -frames:v 1 -vcodec png -f image2pipe -`;
+
+  const process = spawn(cmd, { shell: true });
+  addProcess(process);
+
+  const chunks: Buffer[] = [];
+
+  process.stdout.on('data', (chunk) => {
+    chunks.push(chunk);
+  });
+
+  process.stderr.on('data', (data: Buffer) => {
+    const str = iconv.decode(data, 'gbk');
+    event.sender.send('ffmpeg-output', str);
+  });
+
+  process.on('close', (code) => {
+    removeProcess(process);
+    if (code === 0) {
+      const buffer = Buffer.concat(chunks);
+      const base64 = 'data:image/png;base64,' + buffer.toString('base64');
+      event.sender.send('preview-image', base64);
+    } else {
+      event.sender.send('ffmpeg-output', `预览失败，退出码: ${code}`);
+      event.sender.send('preview-image', null);
+    }
+  event.sender.send('ffmpeg-finish')
+  });
+
+  process.on('error', (err) => {
+    event.sender.send('ffmpeg-output', `命令执行出错: ${err.message}`);
+  });
+}
+
 export async function RunCommand(event, config_json): Promise<void> {
   const videos = config_json.fileList;
 
@@ -429,18 +551,21 @@ export async function RunCommand(event, config_json): Promise<void> {
       const allStreams = metadata.streams || [];
       const videoStream = allStreams.find((s: any) => s.codec_type === 'video');
       const hasAudio = allStreams.some((s: any) => s.codec_type === 'audio');
+      const hasSubtitle = allStreams.some((s: any) => s.codec_type === 'subtitle');
 
       if (videoStream) {
         const frameCount = videoStream.nb_frames || '未知';
         const frameRate = videoStream.avg_frame_rate || '未知';
         const resolution = `${videoStream.width}x${videoStream.height}`;
         const audioText = hasAudio ? '是' : '否';
+        const subtitleText = hasSubtitle ? '是' : '否'; // 字幕信息
 
         event.sender.send('ffmpeg-output', `正在处理输入视频 ${video} 的信息:\n`);
         event.sender.send('ffmpeg-output', `帧数(输入): ${frameCount}\n`);
         event.sender.send('ffmpeg-output', `帧率(输入): ${frameRate}\n`);
         event.sender.send('ffmpeg-output', `分辨率(输入): ${resolution}\n`);
         event.sender.send('ffmpeg-output', `是否含有音频: ${audioText}\n`);
+        event.sender.send('ffmpeg-output', `是否含有字幕: ${subtitleText}\n`);
       }
       // ========== 2. 生成 vpy 文件 ==========
       const vpyFile = generate_vpy(config_json, video);
@@ -478,7 +603,7 @@ export async function RunCommand(event, config_json): Promise<void> {
       });
 
       vspipeInfoProcess.on('close', (code) => {
-          removeProcess(vspipeInfoProcess);
+        removeProcess(vspipeInfoProcess);
         event.sender.send('ffmpeg-output', `vspipe info 执行完毕，退出码: ${code}\n`);///////
 
          info = {
@@ -503,7 +628,7 @@ export async function RunCommand(event, config_json): Promise<void> {
     });
 
       // ========== 4. 构建渲染命令 ==========
-      const cmd = generate_cmd(config_json, vipipePath, vpyPath, ffmpegPath, video, hasAudio);
+      const cmd = generate_cmd(config_json, vipipePath, vpyPath, ffmpegPath, video, hasAudio, hasSubtitle);
       event.sender.send('ffmpeg-output', `Executing command: ${cmd}\n`);
 
       // ========== 5. 渲染并监听输出 ==========

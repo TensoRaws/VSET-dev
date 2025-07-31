@@ -176,6 +176,34 @@ const RealesrganModel_options = [
     value: 'Ani4Kv2_G6i2_UltraCompact',
     label: 'Ani4Kv2_G6i2_UltraCompact',
   },
+  {
+    value: 'AniScale_x2',
+    label: 'AniScale_x2',
+  },
+  {
+    value: 'AniScale2_Refiner_x1',
+    label: 'AniScale2_Refiner_x1',
+  },
+  {
+    value: 'AniScale2S_Compact_x2',
+    label: 'AniScale2S_Compact_x2',
+  },
+  {
+    value: 'AniSD_AC_Compact_x2',
+    label: 'AniSD_AC_Compact_x2',
+  },
+  {
+    value: 'AniSD_Compact_x2',
+    label: 'AniSD_Compact_x2',
+  },
+  {
+    value: 'AniSD_DB_Compact_x1',
+    label: 'AniSD_DB_Compact_x1',
+  },
+  {
+    value: 'AniSD_PS_Compact_x2',
+    label: 'AniSD_PS_Compact_x2',
+  },
 ]
 
 
