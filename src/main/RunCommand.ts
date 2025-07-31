@@ -39,7 +39,14 @@ function generate_cmd(config_json,vipipePath,vpyPath,ffmpegPath,video,hasAudio){
 
   cmd+='-preset '+'"'+config_json.qualityValue+'" '
   if(config_json.isUseCrf==true){
-  cmd+='"-crf" '+'"'+config_json.crfValue+'" '
+      if(config_json.encoderValue.includes('nvenc'))
+      {
+          cmd+='"-cq" '+'"'+config_json.crfValue+'" '
+      }
+      else{
+          cmd+='"-crf" '+'"'+config_json.crfValue+'" '
+      }
+  
   }
   else{
   cmd+='"-b:v" '+'"'+config_json.bitValue+'M" '
@@ -146,6 +153,13 @@ function generate_vpy(config_json,videoName) {
             'animejanaiV3_HD_L3' : 5010,
             'Ani4Kv2_G6i2_Compact ' : 7000,
             'Ani4Kv2_G6i2_UltraCompact ' : 7001,
+            'AniScale_x2' : 7010,
+            'AniScale2_Refiner_x1' : 7011,
+            'AniScale2S_Compact_x2' : 7012,
+            'AniSD_AC_Compact_x2' : 7013,
+            'AniSD_Compact_x2' : 7014,
+            'AniSD_DB_Compact_x1' : 7015,
+            'AniSD_PS_Compact_x2' : 7016,
     };
     const model = model_switch[config_json.RealesrganModelValue] || 0;
     vpyContent +='res = RealESRGAN(res, scale=' + config_json.RealesrganScaleValue + ',tiles=' + 
@@ -394,9 +408,12 @@ export async function RunCommand(event, config_json): Promise<void> {
   const ffmpegPath = path.join(exeDir, "package", "ffmpeg.exe");
   const ffprobePath = path.join(exeDir, "package", "ffprobe.exe");
 
+  shouldStop = false
+
   for (const video of videos) {
     if (shouldStop) {
       event.sender.send('ffmpeg-output', `已终止循环:\n`);
+      shouldStop = false
       break
     }
     try {
@@ -449,13 +466,13 @@ export async function RunCommand(event, config_json): Promise<void> {
       let stderrOut = ''; // 用于保存 stderr 内容
 
       vspipeInfoProcess.stdout.on('data', (data: Buffer) => {
-        const str = iconv.decode(data, 'gbk');
+        const str = iconv.decode(data, 'gbk');;
         vspipeOut += str;
         event.sender.send('ffmpeg-output', `${str}`);
       });
 
       vspipeInfoProcess.stderr.on('data', (data: Buffer) => {
-        const str = iconv.decode(data, 'gbk');
+        const str = iconv.decode(data, 'gbk');;
         stderrOut += str;
         event.sender.send('ffmpeg-output', `${str}`);
       });
@@ -472,10 +489,10 @@ export async function RunCommand(event, config_json): Promise<void> {
         };
 
         event.sender.send('ffmpeg-output', `======= 输出视频信息 =======\n`);
-        event.sender.send('ffmpeg-output', `Width: ${info.width}\n`);
-        event.sender.send('ffmpeg-output', `Height: ${info.height}\n`);
-        event.sender.send('ffmpeg-output', `Frames: ${info.frames}\n`);
-        event.sender.send('ffmpeg-output', `FPS: ${info.fps}\n`);
+        event.sender.send('ffmpeg-output', `宽: ${info.width}\n`);
+        event.sender.send('ffmpeg-output', `高: ${info.height}\n`);
+        event.sender.send('ffmpeg-output', `帧数: ${info.frames}\n`);
+        event.sender.send('ffmpeg-output', `帧率: ${info.fps}\n`);
         resolve();
       });
 
